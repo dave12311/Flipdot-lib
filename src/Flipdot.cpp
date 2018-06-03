@@ -7,7 +7,7 @@
 #include "Flipdot.h"
 
 Flipdot::Flipdot(uint16_t d){
-  if(d > 0 && d < 16000){
+  if(d > 0 && d < 6000){
     write_delay = d;
   } else {
     write_delay = DEFAULT_DELAY;
