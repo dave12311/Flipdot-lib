@@ -2,8 +2,8 @@
   Flipdot.h - Flipdot controller library.
   The cake is a lie.
 */
-#ifndef Flipdot_h
-#define Flipdot_h
+#ifndef Flipdot_base_h
+#define Flipdot_base_h
 #include "Arduino.h"
 
 #define DEFAULT_DELAY 700

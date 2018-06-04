@@ -4,7 +4,7 @@
 */
 
 #include "Arduino.h"
-#include "Flipdot.h"
+#include "Flipdot_base.h"
 
 Flipdot::Flipdot(uint16_t d){
   if(d > 0 && d < 6000){
