@@ -1,12 +1,12 @@
 /*
-  Flipdot.cpp - Flipdot controller library.
+  Flipdot_base.h - Basic functions for Flipdot controller.
   The cake is a lie.
 */
 
 #include "Arduino.h"
 #include "Flipdot_base.h"
 
-Flipdot::Flipdot(uint16_t d){
+Flipdot_base::Flipdot_base(uint16_t d){
   if(d > 0 && d < 6000){
     write_delay = d;
   } else {

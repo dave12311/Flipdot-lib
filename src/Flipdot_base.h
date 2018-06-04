@@ -1,9 +1,11 @@
 /*
-  Flipdot.h - Flipdot controller library.
+  Flipdot_base.h - Basic functions for Flipdot controller.
   The cake is a lie.
 */
+
 #ifndef Flipdot_base_h
 #define Flipdot_base_h
+
 #include "Arduino.h"
 
 #define DEFAULT_DELAY 700
@@ -19,9 +21,9 @@
 #define B 3
 #define C 4
 
-class Flipdot{
+class Flipdot_base{
   public:
-    Flipdot(uint16_t d = DEFAULT_DELAY);
+    Flipdot_base(uint16_t d = DEFAULT_DELAY);
     void setPixel(uint8_t x, uint8_t y, uint8_t state);
   private:
     uint8_t data[10];
