@@ -18,7 +18,7 @@ Flipdot_base::Flipdot_base(uint16_t d){
   }
 }
 
-void Flipdot::resetPins(){
+void Flipdot_base::resetPins(){
   delayMicroseconds(write_delay);
   
   digitalWrite(RE, LOW);
@@ -33,7 +33,7 @@ void Flipdot::resetPins(){
   digitalWrite(C, LOW);
 }
 
-void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
+void Flipdot_base::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
   data[0] = bitRead(rows[y][r],3);
   data[1] = bitRead(rows[y][r],2);
   data[2] = bitRead(rows[y][r],1);
@@ -47,7 +47,7 @@ void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
   data[9] = bitRead(columns[x][c],0); 
 }
 
-void Flipdot::setPixel(uint8_t x, uint8_t y, uint8_t state){
+void Flipdot_base::setPixel(uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX){
     if(state == true){
       if(x % 2 == 0 && y % 2 == 0){

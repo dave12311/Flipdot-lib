@@ -3,11 +3,13 @@
 Flipdot_text flipdot;
 
 void setup(){
+  Serial.begin(9600);
 }
 
 void loop(){
-    for(int i=0;i<26;i++){
+    for(int i=0;i<45;i++){
+        flipdot.clearAll();
         flipdot.writeLetter(i);
-        delay(3000);
+        delay(500);
     }
 }

@@ -11,12 +11,12 @@ void loop() {
       flipdot.setPixel(x,y,true);
     }
   }
-  delay(3000);
+  delay(1000);
   for(int x = 0;x < 24;x++){
     for(int y = 0;y < 7;y++){
       flipdot.setPixel(x,y,false);
       delay(10);
     }
   }
-  delay(3000);
+  delay(1000);
 }
