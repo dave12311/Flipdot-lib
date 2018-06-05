@@ -48,39 +48,41 @@ void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
 }
 
 void Flipdot::setPixel(uint8_t x, uint8_t y, uint8_t state){
-  if(state == true){
-    if(x % 2 == 0 && y % 2 == 0){
-      setData(x,y,0,0);
-    } else if(x % 2 == 0 && y % 2 != 0){
-      setData(x,y,0,1);
-    } else if(x % 2 != 0 && y % 2 == 0){
-      setData(x,y,1,0);
-    } else if(x % 2 != 0 && y % 2 != 0){
-      setData(x,y,1,1);
+  if(x < XMAX && y < YMAX){
+    if(state == true){
+      if(x % 2 == 0 && y % 2 == 0){
+        setData(x,y,0,0);
+      } else if(x % 2 == 0 && y % 2 != 0){
+        setData(x,y,0,1);
+      } else if(x % 2 != 0 && y % 2 == 0){
+        setData(x,y,1,0);
+      } else if(x % 2 != 0 && y % 2 != 0){
+        setData(x,y,1,1);
+      }
+    } else {
+      if(x % 2 == 0 && y % 2 == 0){
+        setData(x,y,1,1);
+      } else if(x % 2 == 0 && y % 2 != 0){
+        setData(x,y,1,0);
+      } else if(x % 2 != 0 && y % 2 == 0){
+        setData(x,y,0,1);
+      } else if(x % 2 != 0 && y % 2 != 0){
+        setData(x,y,0,0);
+      }
     }
-  } else {
-    if(x % 2 == 0 && y % 2 == 0){
-      setData(x,y,1,1);
-    } else if(x % 2 == 0 && y % 2 != 0){
-      setData(x,y,1,0);
-    } else if(x % 2 != 0 && y % 2 == 0){
-      setData(x,y,0,1);
-    } else if(x % 2 != 0 && y % 2 != 0){
-      setData(x,y,0,0);
-    }
-  }
-  
-  digitalWrite(RE, data[0]);
-  digitalWrite(RA, data[1]);
-  digitalWrite(RB, data[2]);
-  digitalWrite(RC, data[3]);
-  digitalWrite(EA, data[4]);
-  digitalWrite(EB, data[5]);
-  digitalWrite(EC, data[6]);
-  digitalWrite(A, data[7]);
-  digitalWrite(B, data[8]);
-  digitalWrite(C, data[9]);
+    
+    digitalWrite(RE, data[0]);
+    digitalWrite(RA, data[1]);
+    digitalWrite(RB, data[2]);
+    digitalWrite(RC, data[3]);
+    digitalWrite(EA, data[4]);
+    digitalWrite(EB, data[5]);
+    digitalWrite(EC, data[6]);
+    digitalWrite(A, data[7]);
+    digitalWrite(B, data[8]);
+    digitalWrite(C, data[9]);
 
-  resetPins();
+    resetPins();
+  }
 }
 
