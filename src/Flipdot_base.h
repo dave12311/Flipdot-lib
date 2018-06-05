@@ -8,6 +8,9 @@
 
 #define DEFAULT_DELAY 700
 
+#define XMAX 24
+#define YMAX 7
+
 #define RE A0
 #define RA 8
 #define RB 9
