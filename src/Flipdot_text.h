@@ -9,9 +9,11 @@
 #include "Flipdot_base.h"
 #include "Arduino.h"
 
+#define FONTS 45
+
 class Flipdot_text{
 	public:
-		void writeLetter(uint8_t l);
+		void writeLetter(uint8_t letter, uint8_t indent = 0);
 		void clearAll();
 	private:
 		Flipdot_base Flipdot;

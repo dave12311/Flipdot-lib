@@ -15,42 +15,37 @@ void Flipdot_text::clearAll(){
 	}
 }
 
-void Flipdot_text::writeLetter(uint8_t l){
-	uint8_t count = 0;
-	//Find first byte of letter (count)
-	for(uint8_t i = 0;i < l+1;){
-		while(true){
-			if(bitRead(font[count],7) == 1){
+void Flipdot_text::writeLetter(uint8_t letter, uint8_t indent){
+	if(letter < FONTS && indent < YMAX){
+		uint8_t count = 0;
+		//Find first byte of letter (count)
+		for(uint8_t i = 0;i < letter+1;){
+			while(true){
+				if(bitRead(font[count],7) == 1){
+					count++;
+					break;
+				}
 				count++;
-				break;
 			}
-			count++;
+			i++;
 		}
-		i++;
-	}
-	count--;
-	
-	//-----------------------------
-	Serial.println("Letter: ");
-	Serial.println(count);
-	Serial.println();
-	
-	//-----------------------------
+		count--;
 
-	uint8_t x = 0;
-	while(true){
-		for(uint8_t y = 0; y < 7;y++){
-			if(bitRead(font[count],y) == 0){
-				Flipdot.setPixel(x,6-y,false);
-			} else {
-				Flipdot.setPixel(x,6-y,true);
+		uint8_t x = indent;
+		while(true){
+			for(uint8_t y = 0; y < 7;y++){
+				if(bitRead(font[count],y) == 0){
+					Flipdot.setPixel(x,6-y,false);
+				} else {
+					Flipdot.setPixel(x,6-y,true);
+				}
 			}
-		}
-		x++;
-		if(bitRead(font[count+1],7) == 1){
-			break;
-		} else {
-			count++;
+			x++;
+			if(bitRead(font[count+1],7) == 1 && x+1 >= YMAX){
+				break;
+			} else {
+				count++;
+			}
 		}
 	}
 }
