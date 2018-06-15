@@ -13,8 +13,12 @@ Flipdot_base::Flipdot_base(uint16_t d){
     write_delay = DEFAULT_DELAY;
   }
   
-  for(int i=0;i<10;i++){
+  for(uint8_t i=0;i<10;i++){
     pinMode(pins[i], OUTPUT);
+  }
+
+  for(uint8_t i=0;i<24;i++){
+    buffer[i] = 0;
   }
 }
 
@@ -48,7 +52,7 @@ void Flipdot_base::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
 }
 
 void Flipdot_base::setPixel(uint8_t x, uint8_t y, uint8_t state){
-  if(x < XMAX && y < YMAX){
+  if(x < XMAX && y < YMAX && state <= 1){
     if(state == true){
       if(x % 2 == 0 && y % 2 == 0){
         setData(x,y,0,0);
@@ -86,3 +90,12 @@ void Flipdot_base::setPixel(uint8_t x, uint8_t y, uint8_t state){
   }
 }
 
+void Flipdot_base::setBuffer(uint8_t x, uint8_t y, uint8_t state){
+  if(x < XMAX && y < YMAX && state <= 1){
+    bitWrite(buffer[x],y,state);
+  }
+}
+
+void Flipdot_base::writeBuffer(uint8_t style){
+  
+}
