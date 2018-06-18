@@ -97,5 +97,17 @@ void Flipdot_base::setBuffer(uint8_t x, uint8_t y, uint8_t state){
 }
 
 void Flipdot_base::writeBuffer(uint8_t style){
-  
+  if(style == 0){
+    for(int y = 0;y < 7;y++){
+      for(int x = 0;x < 24;x++){
+        if(bitRead(buffer[x],y) == true){
+          setPixel(x,y,true);
+        }else{
+          setPixel(x,y,false);
+        }
+      }
+    }
+  }else if(style == 1){
+
+  }
 }
