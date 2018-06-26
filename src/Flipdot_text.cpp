@@ -20,7 +20,7 @@ void Flipdot_text::writeBuffer(uint8_t style){
 }
 
 void Flipdot_text::writeLetter(uint8_t letter, uint8_t indent){
-	if(letter < FONTS && indent < YMAX){
+	if(letter < FONTS && indent < XMAX){
 		uint8_t count = 0;
 		//Find first byte of letter (count)
 		for(uint8_t i = 0;i < letter+1;){
@@ -45,7 +45,7 @@ void Flipdot_text::writeLetter(uint8_t letter, uint8_t indent){
 				}
 			}
 			x++;
-			if(bitRead(font[count+1],7) == 1 && x+1 >= YMAX){
+			if(bitRead(font[count+1],7) == 1 || x+1 >= XMAX){
 				break;
 			} else {
 				count++;
