@@ -1,6 +1,6 @@
-#include "Flipdot_base.h"
+#include "Flipdot.h"
 
-Flipdot_base flipdot;
+Flipdot flipdot;
 
 void setup() {
 }
