@@ -149,10 +149,10 @@ void Flipdot::writeBuffer(uint8_t style){
 }
 
 void Flipdot::setLetter(uint8_t letter, uint8_t indent){
-	if(letter < FONTS && indent < XMAX){
+	if(letter <= FONTS && letter > 0 && indent < XMAX){
 		uint8_t count = 0;
 		//Find first byte of letter (count)
-		for(uint8_t i = 0;i < letter+1;){
+		for(uint8_t i = 0;i < letter;){
 			while(true){
 				if(bitRead(font[count],7) == 1){
 					count++;
