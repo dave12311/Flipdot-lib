@@ -31,9 +31,10 @@ class Flipdot{
     Flipdot(uint16_t d = DEFAULT_DELAY);                    //Sets the number of microseconds each pixel is powered
     void setPixel(uint8_t x, uint8_t y, uint8_t state);     //Sets the given pixel on the screen
     void setBuffer(uint8_t x, uint8_t y, uint8_t state);    //Sets the given pixel in the screen buffer
-    void writeBuffer(uint8_t style = 0);                    //Writes the screen buffer to the screen with the given update style
-    void setAll(uint8_t state = 0);                         //Sets all pixels to the given state
-		void writeLetter(uint8_t letter, uint8_t indent = 0);		//Writes the given letter to the buffer
+	void setLetter(uint8_t letter, uint8_t indent = 0);		//Sets the given letter in the buffer
+    void writeBuffer(uint8_t style = 0);                    //Writes the screen buffer to the screen with the given update style [0:down; 1:up; 2:right; 3:left]
+    void writeAll(uint8_t state = 0);                       //Sets all pixels to the given state
+	void clearBuffer();
   private:
     uint8_t buffer[24];
     uint8_t data[10];

@@ -17,12 +17,10 @@ Flipdot::Flipdot(uint16_t d){
     pinMode(pins[i], OUTPUT);
   }
 
-  for(uint8_t i=0;i<24;i++){
-    buffer[i] = 0;
-  }
+  clearBuffer();
 }
 
-void Flipdot::setAll(uint8_t state = 0){
+void Flipdot::writeAll(uint8_t state){
   if(state == 0 || state == 1){
     for(uint8_t y = 0;y < 7;y++){
       for(uint8_t x = 0;x < 24;x++){
@@ -118,11 +116,39 @@ void Flipdot::writeBuffer(uint8_t style){
       }
     }
   }else if(style == 1){
-
+    for(int y = 6;y >= 0;y--){
+      for(int x = 0;x < 24;x++){
+        if(bitRead(buffer[x],y) == true){
+          setPixel(x,y,true);
+        }else{
+          setPixel(x,y,false);
+        }
+      }
+    }
+  }else if(style == 2){
+    for(int x = 0;x < 24;x++){
+      for(int y = 0;y < 7;y++){
+        if(bitRead(buffer[x],y) == true){
+          setPixel(x,y,true);
+        }else{
+          setPixel(x,y,false);
+        }
+      }
+    }
+  }else if(style == 3){
+    for(int x = 23;x >= 0;x--){
+      for(int y = 0;y < 7;y++){
+        if(bitRead(buffer[x],y) == true){
+          setPixel(x,y,true);
+        }else{
+          setPixel(x,y,false);
+        }
+      }
+    }
   }
 }
 
-void Flipdot::writeLetter(uint8_t letter, uint8_t indent){
+void Flipdot::setLetter(uint8_t letter, uint8_t indent){
 	if(letter < FONTS && indent < XMAX){
 		uint8_t count = 0;
 		//Find first byte of letter (count)
@@ -155,4 +181,10 @@ void Flipdot::writeLetter(uint8_t letter, uint8_t indent){
 			}
 		}
 	}
+}
+
+void Flipdot::clearBuffer(){
+  for(uint8_t i=0;i<24;i++){
+    buffer[i] = 0;
+  }
 }
