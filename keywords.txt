@@ -19,7 +19,7 @@ setBuffer	KEYWORD2
 writeBuffer	KEYWORD2
 
 writeLetter	KEYWORD2
-clearAll	KEYWORD2
+setAll	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

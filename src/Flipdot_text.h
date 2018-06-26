@@ -14,8 +14,8 @@
 class Flipdot_text{
 	public:
 		void writeLetter(uint8_t letter, uint8_t indent = 0);				//Writes the given letter to the buffer
-		void writeBuffer(uint8_t style = 0);
-		void clearAll();
+		void writeBuffer(uint8_t style = 0);								//Writes the screen buffer to the screen with the given update style
+		void setAll(uint8_t state = 0);										//Sets all pixels to the given state
 	private:
 		Flipdot_base Flipdot;
 		const uint8_t font[205] = {

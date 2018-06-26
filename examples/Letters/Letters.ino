@@ -7,7 +7,7 @@ void setup(){
 }
 
 void loop(){
-    flipdot.clearAll();
+    flipdot.setAll();
     delay(200);
 
     flipdot.writeLetter(0,0);

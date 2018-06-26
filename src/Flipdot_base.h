@@ -30,6 +30,7 @@ class Flipdot_base{
     void setPixel(uint8_t x, uint8_t y, uint8_t state);     //Sets the given pixel on the screen
     void setBuffer(uint8_t x, uint8_t y, uint8_t state);    //Sets the given pixel in the screen buffer
     void writeBuffer(uint8_t style = 0);                    //Writes the screen buffer to the screen with the given update style
+    void setAll(uint8_t state = 0);                         //Sets all pixels to the given state
   private:
     uint8_t buffer[24];
     uint8_t data[10];

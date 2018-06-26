@@ -7,10 +7,10 @@
 #include "Flipdot_base.h"
 #include "Flipdot_text.h"
 
-void Flipdot_text::clearAll(){
+void Flipdot_text::setAll(uint8_t state){
 	for(uint8_t y = 0;y < 7;y++){
 		for(uint8_t x = 0;x < 24;x++){
-			Flipdot.setPixel(x,y,false);
+			Flipdot.setPixel(x,y,state);
 		}
 	}
 }

@@ -22,6 +22,16 @@ Flipdot_base::Flipdot_base(uint16_t d){
   }
 }
 
+void Flipdot_base::setAll(uint8_t state = 0){
+  if(state == 0 || state == 1){
+    for(uint8_t y = 0;y < 7;y++){
+      for(uint8_t x = 0;x < 24;x++){
+        setPixel(x,y,state);
+      }
+    }
+  }
+}
+
 void Flipdot_base::resetPins(){
   delayMicroseconds(write_delay);
   
