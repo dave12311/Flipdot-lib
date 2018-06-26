@@ -14,5 +14,5 @@ void loop(){
     flipdot.writeLetter(1,5);
     flipdot.writeLetter(2,10);
     flipdot.writeBuffer(0);
-
+    delay(200);
 }
