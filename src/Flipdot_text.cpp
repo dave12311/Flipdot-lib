@@ -15,6 +15,10 @@ void Flipdot_text::clearAll(){
 	}
 }
 
+void Flipdot_text::writeBuffer(uint8_t style){
+	Flipdot.writeBuffer(style);
+}
+
 void Flipdot_text::writeLetter(uint8_t letter, uint8_t indent){
 	if(letter < FONTS && indent < YMAX){
 		uint8_t count = 0;
@@ -35,9 +39,9 @@ void Flipdot_text::writeLetter(uint8_t letter, uint8_t indent){
 		while(true){
 			for(uint8_t y = 0; y < 7;y++){
 				if(bitRead(font[count],y) == 0){
-					Flipdot.setPixel(x,6-y,false);
+					Flipdot.setBuffer(x,6-y,false);
 				} else {
-					Flipdot.setPixel(x,6-y,true);
+					Flipdot.setBuffer(x,6-y,true);
 				}
 			}
 			x++;

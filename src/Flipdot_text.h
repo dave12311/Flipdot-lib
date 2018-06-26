@@ -13,7 +13,8 @@
 
 class Flipdot_text{
 	public:
-		void writeLetter(uint8_t letter, uint8_t indent = 0);
+		void writeLetter(uint8_t letter, uint8_t indent = 0);				//Writes the given letter to the buffer
+		void writeBuffer(uint8_t style = 0);
 		void clearAll();
 	private:
 		Flipdot_base Flipdot;
