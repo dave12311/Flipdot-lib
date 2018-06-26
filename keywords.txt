@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For Flipdot-lib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Flipdot_base	KEYWORD1
+
+Flipdot_text	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setPixel	KEYWORD2
+setBuffer	KEYWORD2
+writeBuffer	KEYWORD2
+
+writeLetter	KEYWORD2
+setAll	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################

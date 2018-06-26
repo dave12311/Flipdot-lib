@@ -1,24 +1,38 @@
 /*
-  Flipdot.cpp - Flipdot controller library.
+  Flipdot_base.h - Basic functions for Flipdot controller.
   The cake is a lie.
 */
 
 #include "Arduino.h"
 #include "Flipdot_base.h"
 
-Flipdot::Flipdot(uint16_t d){
+Flipdot_base::Flipdot_base(uint16_t d){
   if(d > 0 && d < 6000){
     write_delay = d;
   } else {
     write_delay = DEFAULT_DELAY;
   }
   
-  for(int i=0;i<10;i++){
+  for(uint8_t i=0;i<10;i++){
     pinMode(pins[i], OUTPUT);
+  }
+
+  for(uint8_t i=0;i<24;i++){
+    buffer[i] = 0;
   }
 }
 
-void Flipdot::resetPins(){
+void Flipdot_base::setAll(uint8_t state = 0){
+  if(state == 0 || state == 1){
+    for(uint8_t y = 0;y < 7;y++){
+      for(uint8_t x = 0;x < 24;x++){
+        setPixel(x,y,state);
+      }
+    }
+  }
+}
+
+void Flipdot_base::resetPins(){
   delayMicroseconds(write_delay);
   
   digitalWrite(RE, LOW);
@@ -33,7 +47,7 @@ void Flipdot::resetPins(){
   digitalWrite(C, LOW);
 }
 
-void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
+void Flipdot_base::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
   data[0] = bitRead(rows[y][r],3);
   data[1] = bitRead(rows[y][r],2);
   data[2] = bitRead(rows[y][r],1);
@@ -47,8 +61,8 @@ void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
   data[9] = bitRead(columns[x][c],0); 
 }
 
-void Flipdot::setPixel(uint8_t x, uint8_t y, uint8_t state){
-  if(x < XMAX && y < YMAX){
+void Flipdot_base::setPixel(uint8_t x, uint8_t y, uint8_t state){
+  if(x < XMAX && y < YMAX && state <= 1){
     if(state == true){
       if(x % 2 == 0 && y % 2 == 0){
         setData(x,y,0,0);
@@ -86,3 +100,24 @@ void Flipdot::setPixel(uint8_t x, uint8_t y, uint8_t state){
   }
 }
 
+void Flipdot_base::setBuffer(uint8_t x, uint8_t y, uint8_t state){
+  if(x < XMAX && y < YMAX && state <= 1){
+    bitWrite(buffer[x],y,state);
+  }
+}
+
+void Flipdot_base::writeBuffer(uint8_t style){
+  if(style == 0){
+    for(int y = 0;y < 7;y++){
+      for(int x = 0;x < 24;x++){
+        if(bitRead(buffer[x],y) == true){
+          setPixel(x,y,true);
+        }else{
+          setPixel(x,y,false);
+        }
+      }
+    }
+  }else if(style == 1){
+
+  }
+}
