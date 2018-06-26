@@ -6,9 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Flipdot_base	KEYWORD1
-
-Flipdot_text	KEYWORD1
+Flipdot	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -17,7 +15,6 @@ Flipdot_text	KEYWORD1
 setPixel	KEYWORD2
 setBuffer	KEYWORD2
 writeBuffer	KEYWORD2
-
 writeLetter	KEYWORD2
 setAll	KEYWORD2
 
