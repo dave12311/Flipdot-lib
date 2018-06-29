@@ -22,9 +22,9 @@ Flipdot::Flipdot(uint16_t d){
 
 void Flipdot::writeAll(uint8_t state){
   if(state == 0 || state == 1){
-    for(uint8_t y = 0;y < 7;y++){
-      for(uint8_t x = 0;x < 24;x++){
-        setPixel(x,y,state);
+    for(uint8_t y = 0;y < YMAX;y++){
+      for(uint8_t x = 0;x < XMAX;x++){
+        writePixel(x,y,state);
       }
     }
   }
@@ -59,7 +59,7 @@ void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
   data[9] = bitRead(columns[x][c],0); 
 }
 
-void Flipdot::setPixel(uint8_t x, uint8_t y, uint8_t state){
+void Flipdot::writePixel(uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX && state <= 1){
     if(state == true){
       if(x % 2 == 0 && y % 2 == 0){
@@ -109,9 +109,9 @@ void Flipdot::writeBuffer(uint8_t style){
     for(int y = 0;y < 7;y++){
       for(int x = 0;x < 24;x++){
         if(bitRead(buffer[x],y) == true){
-          setPixel(x,y,true);
+          writePixel(x,y,true);
         }else{
-          setPixel(x,y,false);
+          writePixel(x,y,false);
         }
       }
     }
@@ -119,9 +119,9 @@ void Flipdot::writeBuffer(uint8_t style){
     for(int y = 6;y >= 0;y--){
       for(int x = 0;x < 24;x++){
         if(bitRead(buffer[x],y) == true){
-          setPixel(x,y,true);
+          writePixel(x,y,true);
         }else{
-          setPixel(x,y,false);
+          writePixel(x,y,false);
         }
       }
     }
@@ -129,9 +129,9 @@ void Flipdot::writeBuffer(uint8_t style){
     for(int x = 0;x < 24;x++){
       for(int y = 0;y < 7;y++){
         if(bitRead(buffer[x],y) == true){
-          setPixel(x,y,true);
+          writePixel(x,y,true);
         }else{
-          setPixel(x,y,false);
+          writePixel(x,y,false);
         }
       }
     }
@@ -139,9 +139,9 @@ void Flipdot::writeBuffer(uint8_t style){
     for(int x = 23;x >= 0;x--){
       for(int y = 0;y < 7;y++){
         if(bitRead(buffer[x],y) == true){
-          setPixel(x,y,true);
+          writePixel(x,y,true);
         }else{
-          setPixel(x,y,false);
+          writePixel(x,y,false);
         }
       }
     }
@@ -174,7 +174,7 @@ void Flipdot::setLetter(uint8_t letter, uint8_t indent){
 				}
 			}
 			x++;
-			if(bitRead(font[count+1],7) == 1 || x+1 >= XMAX){
+			if(bitRead(font[count+1],7) == 1 || x+1 > XMAX){
 				break;
 			} else {
 				count++;
@@ -187,4 +187,8 @@ void Flipdot::clearBuffer(){
   for(uint8_t i=0;i<24;i++){
     buffer[i] = 0;
   }
+}
+
+void Flipdot::setWord(uint8_t *wordPointer, uint8_t speed){
+  
 }
