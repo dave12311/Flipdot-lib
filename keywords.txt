@@ -12,9 +12,9 @@ Flipdot	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-setPixel	KEYWORD2
 setBuffer	KEYWORD2
 setLetter	KEYWORD2
+writePixel	KEYWORD2
 writeBuffer	KEYWORD2
 writeAll	KEYWORD2
 clearBuffer	KEYWORD2
