@@ -8,20 +8,6 @@ void Flipdot::writeAll(uint8_t state){
   }
 }
 
-void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
-  data[0] = bitRead(rows[y][r],3);
-  data[1] = bitRead(rows[y][r],2);
-  data[2] = bitRead(rows[y][r],1);
-  data[3] = bitRead(rows[y][r],0);
-  
-  data[4] = bitRead(columns[x][c],5);
-  data[5] = bitRead(columns[x][c],4);
-  data[6] = bitRead(columns[x][c],3);
-  data[7] = bitRead(columns[x][c],2);
-  data[8] = bitRead(columns[x][c],1);
-  data[9] = bitRead(columns[x][c],0); 
-}
-
 void Flipdot::writePixel(uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX && state <= 1){
     if(state == true){
@@ -58,12 +44,6 @@ void Flipdot::writePixel(uint8_t x, uint8_t y, uint8_t state){
     digitalWrite(C, data[9]);
 
     resetPins();
-  }
-}
-
-void Flipdot::setBuffer(uint8_t x, uint8_t y, uint8_t state){
-  if(x < XMAX && y < YMAX && state <= 1){
-    bitWrite(buffer[x],y,state);
   }
 }
 
@@ -147,5 +127,5 @@ void Flipdot::setLetter(uint8_t letter, uint8_t indent){
 }
 
 void Flipdot::setWord(uint8_t *wordPointer, uint8_t speed){
-  
+	
 }
