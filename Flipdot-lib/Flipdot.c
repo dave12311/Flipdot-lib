@@ -73,6 +73,7 @@ const uint8_t PROGMEM font[205] = {
 void Flipdot_resetPins (void){
 	Flipdot_delay(f_write_delay);
 	
+	//TODO: Missing RE pin (sets the direction of the row controller), needs new PCB (RE data is the last bit
 	//	I/O pins		    NAME			NAME ON BOARD
 		
 	clearBit(PORTB,0);		//A					MCU 2
@@ -184,21 +185,21 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 	
 	//TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 	//	I/O pins		NAME			NAME ON BOARD
-	
-	DDRB |= (1<<0);		//A					MCU 2
-	DDRB |= (1<<1);		//B					MCU 3
-	DDRB |= (1<<2);		//C					MCU 4
-	DDRB |= (1<<3);		//Row A				MCU 8
-	DDRB |= (1<<4);		//Row B				MCU 9
-	DDRB |= (1<<5);		//Row C				MCU 10
-	DDRB |= (1<<6);		//Subsegment A		MCU 5
-	DDRB |= (1<<7);		//Subsegment B		MCU 6
-	DDRD |= (1<<0);		//Subsegment C		MCU 7
-	DDRD |= (1<<1);		//Segment A			Internal
-	
-	//TODO
-	//DDRD |= (1<<2);		//Segment B			Internal
-	//DDRD |= (1<<3);		//Segment C			Internal
+	//TODO: SET CORRECT BIT MASKING OPERATIONS ACCORDING TO THE COMMENTS BELOW!!!!! [digitalWrite]
+	PORTB |= (f_data[0]<<0);		//A					MCU 2
+	PORTB |= (f_data[1]<<1);		//B					MCU 3
+	PORTB |= (f_data[2]<<2);		//C					MCU 4
+	PORTB |= (f_data[3]<<3);		//Row A				MCU 8
+	PORTB |= (f_data[4]<<4);		//Row B				MCU 9
+	PORTB |= (f_data[5]<<5);		//Row C				MCU 10
+	PORTB |= (f_data[6]<<6);		//Subsegment A		MCU 5
+	PORTB |= (f_data[7]<<7);		//Subsegment B		MCU 6
+	PORTD |= (f_data[8]<<0);		//Subsegment C		MCU 7
+	PORTD |= (f_data[9]<<1);		//RE PIN MISSING FROM DESIGN!!!!!!!
+
+	PORTD |= (f_data[]<<1);		//Segment A			Internal
+	PORTD |= (f_data[]<<2);		//Segment B			Internal
+	PORTD |= (f_data[]<<3);		//Segment C			Internal
 	  
 	  //digitalWrite(RE, data[0]);
 	  //digitalWrite(RA, data[1]);
