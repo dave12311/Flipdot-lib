@@ -142,18 +142,17 @@ void Flipdot_init (void){
 }
 
 void Flipdot_setData (uint8_t x, uint8_t y, uint8_t row, uint8_t column){
-	//TODO: Fix references to columns and rows because of PROGMEM!
-	f_data[0] = (rows[y][row] >> 3) & 1;
-	f_data[1] = (rows[y][row] >> 2) & 1;
-	f_data[2] = (rows[y][row] >> 1) & 1;
-	f_data[3] = (rows[y][row] >> 0) & 1;
-	
-	f_data[4] = (columns[x][column] >> 5) & 1;
-	f_data[5] = (columns[x][column] >> 4) & 1;
-	f_data[6] = (columns[x][column] >> 3) & 1;
-	f_data[7] = (columns[x][column] >> 2) & 1;
-	f_data[8] = (columns[x][column] >> 1) & 1;
-	f_data[9] = (columns[x][column] >> 0) & 1;
+	f_data[0] = (pgm_read_byte(&rows[y][row]) >> 3) & 1;
+	f_data[1] = (pgm_read_byte(&rows[y][row]) >> 2) & 1;
+	f_data[2] = (pgm_read_byte(&rows[y][row]) >> 1) & 1;
+	f_data[3] = (pgm_read_byte(&rows[y][row]) >> 0) & 1;
+				 
+	f_data[4] = (pgm_read_byte(&columns[x][column]) >> 5) & 1;
+	f_data[5] = (pgm_read_byte(&columns[x][column]) >> 4) & 1;
+	f_data[6] = (pgm_read_byte(&columns[x][column]) >> 3) & 1;
+	f_data[7] = (pgm_read_byte(&columns[x][column]) >> 2) & 1;
+	f_data[8] = (pgm_read_byte(&columns[x][column]) >> 1) & 1;
+	f_data[9] = (pgm_read_byte(&columns[x][column]) >> 0) & 1;
 }
 
 void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
