@@ -72,22 +72,21 @@ const uint8_t PROGMEM font[205] = {
 
 void Flipdot_resetPins (void){
 	Flipdot_delay(f_write_delay);
-	
-	//TODO: Missing RE pin (sets the direction of the row controller), needs new PCB (RE data is the last bit
-	//	I/O pins		    NAME			NAME ON BOARD
-		
-	clearBit(PORTB,0);		//A					MCU 2
-	clearBit(PORTB,1);		//B					MCU 3
-	clearBit(PORTB,2);		//C					MCU 4
-	clearBit(PORTB,3);		//Row A				MCU 8
-	clearBit(PORTB,4);		//Row B				MCU 9
-	clearBit(PORTB,5);		//Row C				MCU 10
-	clearBit(PORTB,6);		//Subsegment A		MCU 5
-	clearBit(PORTB,7);		//Subsegment B		MCU 6
-	clearBit(PORTD,0);		//Subsegment C		MCU 7
-	clearBit(PORTD,1);		//Segment A			Internal
-	clearBit(PORTD,2);		//Segment B			Internal
-	clearBit(PORTD,3);		//Segment C			Internal
+
+	//	I/O pins		    NAME				CONNECTOR NAME
+	clearBit(PORTB,0);		//A					A
+	clearBit(PORTB,1);		//B					B
+	clearBit(PORTB,2);		//C					C
+	clearBit(PORTD,0);		//Row A				RA
+	clearBit(PORTD,1);		//Row B				RB
+	clearBit(PORTD,2);		//Row C				RC
+	clearBit(PORTD,3);		//Row Enable		RE
+	clearBit(PORTD,5);		//Subsegment A		EA
+	clearBit(PORTD,6);		//Subsegment B		EB
+	clearBit(PORTD,7);		//Subsegment C		EC
+	clearBit(PORTC,0);		//Segment A			Internal (SA)
+	clearBit(PORTC,1);		//Segment B			Internal (SB)
+	clearBit(PORTC,2);		//Segment C			Internal (SC)		
 }
 
 void Flipdot_delay (uint8_t t){
@@ -124,20 +123,22 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
 }
 
 void Flipdot_init (void){
-	//	I/O pins		NAME			NAME ON BOARD
+	//Set output pins
 	
-	setBit(DDRB,0);		//A					MCU 2
-	setBit(DDRB,1);		//B					MCU 3
-	setBit(DDRB,2);		//C					MCU 4
-	setBit(DDRB,3);		//Row A				MCU 8
-	setBit(DDRB,4);		//Row B				MCU 9
-	setBit(DDRB,5);		//Row C				MCU 10
-	setBit(DDRB,6);		//Subsegment A		MCU 5
-	setBit(DDRB,7);		//Subsegment B		MCU 6
-	setBit(DDRD,0);		//Subsegment C		MCU 7
-	setBit(DDRD,1);		//Segment A			Internal
-	setBit(DDRD,2);		//Segment B			Internal
-	setBit(DDRD,3);		//Segment C			Internal
+	//	I/O pins		    NAME				CONNECTOR NAME
+	setBit(DDRB,0); 		//A					A
+	setBit(DDRB,1); 		//B					B
+	setBit(DDRB,2); 		//C					C
+	setBit(DDRD,0); 		//Row A				RA
+	setBit(DDRD,1); 		//Row B				RB
+	setBit(DDRD,2); 		//Row C				RC
+	setBit(DDRD,3); 		//Row Enable		RE
+	setBit(DDRD,5); 		//Subsegment A		EA
+	setBit(DDRD,6); 		//Subsegment B		EB
+	setBit(DDRD,7); 		//Subsegment C		EC
+	setBit(DDRC,0); 		//Segment A			Internal (SA)
+	setBit(DDRC,1); 		//Segment B			Internal (SB)
+	setBit(DDRC,2); 		//Segment C			Internal (SC)
 	
 	Flipdot_clearBuffer();
 }
@@ -186,6 +187,22 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 	//TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 	//	I/O pins		NAME			NAME ON BOARD
 	//TODO: SET CORRECT BIT MASKING OPERATIONS ACCORDING TO THE COMMENTS BELOW!!!!! [digitalWrite]
+	
+		//	I/O pins		    NAME				CONNECTOR NAME
+		clearBit(PORTB,0);		//A					A
+		clearBit(PORTB,1);		//B					B
+		clearBit(PORTB,2);		//C					C
+		clearBit(PORTD,0);		//Row A				RA
+		clearBit(PORTD,1);		//Row B				RB
+		clearBit(PORTD,2);		//Row C				RC
+		clearBit(PORTD,3);		//Row Enable		RE
+		clearBit(PORTD,5);		//Subsegment A		EA
+		clearBit(PORTD,6);		//Subsegment B		EB
+		clearBit(PORTD,7);		//Subsegment C		EC
+		clearBit(PORTC,0);		//Segment A			Internal (SA)
+		clearBit(PORTC,1);		//Segment B			Internal (SB)
+		clearBit(PORTC,2);		//Segment C			Internal (SC)
+	
 	PORTB |= (f_data[0]<<0);		//A					MCU 2
 	PORTB |= (f_data[1]<<1);		//B					MCU 3
 	PORTB |= (f_data[2]<<2);		//C					MCU 4
