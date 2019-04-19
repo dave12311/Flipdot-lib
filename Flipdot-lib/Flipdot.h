@@ -24,6 +24,7 @@ void Flipdot_init (void);																		//Initialize the library
 void Flipdot_setDelay (uint16_t delay);															//Set the number of microseconds each pixel is magnetized for
 void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state);									//Writes the given pixel to the screen
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state);									//Sets the given pixel in the buffer
+void Flipdot_writeBuffer (uint8_t style);													//Writes the screen buffer to the screen with the given update style [0:down; 1:up; 2:right; 3:left]
 void Flipdot_clearBuffer (void);																//Clears the internal buffer
 
 /* ----------------------------------------------------- Internal functions ------------------------------------------------------ */

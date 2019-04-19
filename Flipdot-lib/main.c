@@ -2,8 +2,8 @@
 
 int main(void){
 	Flipdot_init();
-    while (1){
+	while(1){
 		
-    }
+	}
 }
 

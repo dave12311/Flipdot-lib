@@ -125,6 +125,50 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   }
 }
 
+void Flipdot_writeBuffer (uint8_t style){
+	if(style == 0){
+		for(uint8_t y = 0;y < 7;y++){
+			for(uint8_t x = 0;x < 24;x++){
+				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
+					Flipdot_writePixel(x,y,1);
+					}else{
+					Flipdot_writePixel(x,y,0);
+				}
+			}
+		}
+		}else if(style == 1){
+		for(uint8_t y = 6;y >= 0;y--){
+			for(uint8_t x = 0;x < 24;x++){
+				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
+					Flipdot_writePixel(x,y,1);
+					}else{
+					Flipdot_writePixel(x,y,0);
+				}
+			}
+		}
+		}else if(style == 2){
+		for(uint8_t x = 0;x < 24;x++){
+			for(uint8_t y = 0;y < 7;y++){
+				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
+					Flipdot_writePixel(x,y,1);
+					}else{
+					Flipdot_writePixel(x,y,0);
+				}
+			}
+		}
+		}else if(style == 3){
+		for(uint8_t x = 23;x >= 0;x--){
+			for(uint8_t y = 0;y < 7;y++){
+				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
+					Flipdot_writePixel(x,y,1);
+					}else{
+					Flipdot_writePixel(x,y,0);
+				}
+			}
+		}
+	}
+}
+
 void Flipdot_init (void){
 	//Set output pins
 	
