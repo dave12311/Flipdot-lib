@@ -1,3 +1,25 @@
+/*
+  Flipdot.cpp - Basic functionality for Flipdot controllers.
+  The cake is a lie.
+*/
+
+#include "Arduino.h"
+#include "Flipdot.h"
+
+Flipdot::Flipdot(uint16_t d){
+  if(d > 0 && d < 6000){
+    write_delay = d;
+  } else {
+    write_delay = DEFAULT_DELAY;
+  }
+  
+  for(uint8_t i=0;i<10;i++){
+    pinMode(pins[i], OUTPUT);
+  }
+
+  clearBuffer();
+}
+
 void Flipdot::writeAll(uint8_t state){
   if(state == 0 || state == 1){
     for(uint8_t y = 0;y < YMAX;y++){
@@ -6,6 +28,35 @@ void Flipdot::writeAll(uint8_t state){
       }
     }
   }
+}
+
+void Flipdot::resetPins(){
+  delayMicroseconds(write_delay);
+  
+  digitalWrite(RE, LOW);
+  digitalWrite(RA, LOW);
+  digitalWrite(RB, LOW);
+  digitalWrite(RC, LOW);
+  digitalWrite(EA, LOW);
+  digitalWrite(EB, LOW);
+  digitalWrite(EC, LOW);
+  digitalWrite(A, LOW);
+  digitalWrite(B, LOW);
+  digitalWrite(C, LOW);
+}
+
+void Flipdot::setData(uint8_t x, uint8_t y, uint8_t r, uint8_t c){
+  data[0] = bitRead(rows[y][r],3);
+  data[1] = bitRead(rows[y][r],2);
+  data[2] = bitRead(rows[y][r],1);
+  data[3] = bitRead(rows[y][r],0);
+  
+  data[4] = bitRead(columns[x][c],5);
+  data[5] = bitRead(columns[x][c],4);
+  data[6] = bitRead(columns[x][c],3);
+  data[7] = bitRead(columns[x][c],2);
+  data[8] = bitRead(columns[x][c],1);
+  data[9] = bitRead(columns[x][c],0); 
 }
 
 void Flipdot::writePixel(uint8_t x, uint8_t y, uint8_t state){
@@ -44,6 +95,12 @@ void Flipdot::writePixel(uint8_t x, uint8_t y, uint8_t state){
     digitalWrite(C, data[9]);
 
     resetPins();
+  }
+}
+
+void Flipdot::setBuffer(uint8_t x, uint8_t y, uint8_t state){
+  if(x < XMAX && y < YMAX && state <= 1){
+    bitWrite(buffer[x],y,state);
   }
 }
 
@@ -126,6 +183,12 @@ void Flipdot::setLetter(uint8_t letter, uint8_t indent){
 	}
 }
 
+void Flipdot::clearBuffer(){
+  for(uint8_t i=0;i<24;i++){
+    buffer[i] = 0;
+  }
+}
+
 void Flipdot::setWord(uint8_t *wordPointer, uint8_t speed){
-	
+  
 }
