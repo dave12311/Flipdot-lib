@@ -1,12 +1,16 @@
+#Build Directories
+[Dd]ebug/
+[Rr]elease/
 
-Flipdot-lib/Debug/Makefile
-Flipdot-lib/Debug/main.o
-Flipdot-lib/Debug/main.d
-Flipdot-lib/Debug/Flipdot.o
-Flipdot-lib/Debug/Flipdot.d
-Flipdot-lib/Debug/Flipdot-lib.srec
-Flipdot-lib/Debug/Flipdot-lib.map
-Flipdot-lib/Debug/Flipdot-lib.lss
-Flipdot-lib/Debug/Flipdot-lib.hex
-Flipdot-lib/Debug/Flipdot-lib.elf
-.vs/Flipdot-lib/v14/.atsuo
+#Build Results
+*.o
+*.d
+*.eep
+*.elf
+*.hex
+*.map
+*.srec
+
+#User Specific Files
+*.atsuo
+*.componentinfo.xml

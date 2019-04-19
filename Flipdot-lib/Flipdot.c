@@ -6,6 +6,7 @@
   I/O PINS MUST BE CHANGED UNDER:
 	- Flipdot_resetPins()
 	- Flipdot_init()
+	- Flipdot_writePixel()
 */
 
 #include "Flipdot.h"
@@ -13,8 +14,9 @@
 #include <avr/io.h>
 
 //Bit macros
-#define clearBit(A,B) (A &= ~(1<<B))
-#define setBit(A,B) (A |= (1<<B))
+#define clearBit(A,B) (A &= ~(1<<B))										//Set the [B]-th bit of [A] to  0
+#define setBit(A,B) (A |= (1<<B))											//Set the [B]-th bit of [A] to  1
+#define changeBit(A,B,C) (((C & 1) == 1) ? setBit(A,B) : clearBit(A,B))		//Set the [B]-th bit of [A] to [C]
 
 //DATA
 const uint8_t PROGMEM columns[24][2] = { {0b010100,0b110100},{0b110010,0b010010},{0b010000,0b110000},{0b110110,0b010110},{0b011011,0b101011},{0b110001,0b010001},{0b011101,0b101101},{0b110101,0b010101},{0b011001,0b101001},{0b110011,0b010011},{0b011110,0b101110},{0b100000,0b001000},{0b011010,0b101010},{0b100100,0b001100},{0b011100,0b101100},{0b100010,0b001010},{0b011000,0b101000},{0b100110,0b001110},{0b111111,0b111010},{0b100001,0b001001},{0b111011,0b111100},{0b100101,0b001101},{0b111101,0b111000},{0b100011,0b001011}  };
@@ -71,7 +73,7 @@ const uint8_t PROGMEM font[205] = {
 };
 
 void Flipdot_resetPins (void){
-	Flipdot_delay(f_write_delay);
+	Flipdot_delay(f_writeDelay);
 
 	//	I/O pins		    NAME				CONNECTOR NAME
 	clearBit(PORTB,0);		//A					A
@@ -84,6 +86,7 @@ void Flipdot_resetPins (void){
 	clearBit(PORTD,5);		//Subsegment A		EA
 	clearBit(PORTD,6);		//Subsegment B		EB
 	clearBit(PORTD,7);		//Subsegment C		EC
+	
 	clearBit(PORTC,0);		//Segment A			Internal (SA)
 	clearBit(PORTC,1);		//Segment B			Internal (SB)
 	clearBit(PORTC,2);		//Segment C			Internal (SC)		
@@ -100,24 +103,24 @@ void Flipdot_delay (uint8_t t){
 
 void Flipdot_setDelay (uint16_t delay){
 	if(delay > 0 && delay < 50){
-		f_write_delay = delay;
+		f_writeDelay = delay;
 	} else {
-		f_write_delay = DEFAULT_DELAY;
+		f_writeDelay = DEFAULT_DELAY;
 	}
 }
 
 void Flipdot_clearBuffer (void){
 	for(uint8_t i=0;i<24;i++){
-		f_buffer[i] = 0;
+		f_frameBuffer[i] = 0;
 	}
 }
 
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX && state <= 1){
 	  if(state == 1){
-		  f_buffer[x] |= (1<<y);
+		  f_frameBuffer[x] |= (1<<y);
 	  }else if(state == 0){
-		  f_buffer[x] &= ~(1<<y);
+		  f_frameBuffer[x] &= ~(1<<y);
 	  }
   }
 }
@@ -136,6 +139,7 @@ void Flipdot_init (void){
 	setBit(DDRD,5); 		//Subsegment A		EA
 	setBit(DDRD,6); 		//Subsegment B		EB
 	setBit(DDRD,7); 		//Subsegment C		EC
+	
 	setBit(DDRC,0); 		//Segment A			Internal (SA)
 	setBit(DDRC,1); 		//Segment B			Internal (SB)
 	setBit(DDRC,2); 		//Segment C			Internal (SC)
@@ -143,18 +147,19 @@ void Flipdot_init (void){
 	Flipdot_clearBuffer();
 }
 
-void Flipdot_setData (uint8_t x, uint8_t y, uint8_t row, uint8_t column){
-	f_data[0] = (pgm_read_byte(&rows[y][row]) >> 3) & 1;
-	f_data[1] = (pgm_read_byte(&rows[y][row]) >> 2) & 1;
-	f_data[2] = (pgm_read_byte(&rows[y][row]) >> 1) & 1;
-	f_data[3] = (pgm_read_byte(&rows[y][row]) >> 0) & 1;
+void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t columnInvert){
+	//																				NAME					CONNECTOR NAME
+	f_outputPinData[0] = (pgm_read_byte(&rows[y][rowInvert]) >> 3) & 1;				//Row Enable			RE
+	f_outputPinData[1] = (pgm_read_byte(&rows[y][rowInvert]) >> 2) & 1;				//Row A					RA
+	f_outputPinData[2] = (pgm_read_byte(&rows[y][rowInvert]) >> 1) & 1;				//Row B					RB
+	f_outputPinData[3] = (pgm_read_byte(&rows[y][rowInvert]) >> 0) & 1;				//Row C					RC
 				 
-	f_data[4] = (pgm_read_byte(&columns[x][column]) >> 5) & 1;
-	f_data[5] = (pgm_read_byte(&columns[x][column]) >> 4) & 1;
-	f_data[6] = (pgm_read_byte(&columns[x][column]) >> 3) & 1;
-	f_data[7] = (pgm_read_byte(&columns[x][column]) >> 2) & 1;
-	f_data[8] = (pgm_read_byte(&columns[x][column]) >> 1) & 1;
-	f_data[9] = (pgm_read_byte(&columns[x][column]) >> 0) & 1;
+	f_outputPinData[4] = (pgm_read_byte(&columns[x][columnInvert]) >> 5) & 1;		//Subsegment A			EA
+	f_outputPinData[5] = (pgm_read_byte(&columns[x][columnInvert]) >> 4) & 1;		//Subsegment B			EB
+	f_outputPinData[6] = (pgm_read_byte(&columns[x][columnInvert]) >> 3) & 1;		//Subsegment C			EC
+	f_outputPinData[7] = (pgm_read_byte(&columns[x][columnInvert]) >> 2) & 1;		//A						A
+	f_outputPinData[8] = (pgm_read_byte(&columns[x][columnInvert]) >> 1) & 1;		//B						B
+	f_outputPinData[9] = (pgm_read_byte(&columns[x][columnInvert]) >> 0) & 1;		//C						C
 }
 
 void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
@@ -163,71 +168,43 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 		uint8_t y_mod = y % 2;
 		if(state == 1){
 			if(!x_mod && !y_mod){
-				Flipdot_setData(x,y,0,0);
+				Flipdot_setOutputPinData(x,y,0,0);
 			}else if(!x_mod && y_mod){
-				Flipdot_setData(x,y,0,1);
+				Flipdot_setOutputPinData(x,y,0,1);
 			}else if(x_mod && !y_mod){
-				Flipdot_setData(x,y,1,0);
+				Flipdot_setOutputPinData(x,y,1,0);
 			}else if(x_mod && y_mod){
-				Flipdot_setData(x,y,1,1);
+				Flipdot_setOutputPinData(x,y,1,1);
 			}
 		}else{
 			if(!x_mod && !y_mod){
-				Flipdot_setData(x,y,1,1);
+				Flipdot_setOutputPinData(x,y,1,1);
 				}else if(!x_mod && y_mod){
-				Flipdot_setData(x,y,1,0);
+				Flipdot_setOutputPinData(x,y,1,0);
 				}else if(x_mod && !y_mod){
-				Flipdot_setData(x,y,0,1);
+				Flipdot_setOutputPinData(x,y,0,1);
 				}else if(x_mod && y_mod){
-				Flipdot_setData(x,y,0,0);
+				Flipdot_setOutputPinData(x,y,0,0);
 			}
 		}
 	}
-	
-	//TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-	//	I/O pins		NAME			NAME ON BOARD
-	//TODO: SET CORRECT BIT MASKING OPERATIONS ACCORDING TO THE COMMENTS BELOW!!!!! [digitalWrite]
-	
-		//	I/O pins		    NAME				CONNECTOR NAME
-		clearBit(PORTB,0);		//A					A
-		clearBit(PORTB,1);		//B					B
-		clearBit(PORTB,2);		//C					C
-		clearBit(PORTD,0);		//Row A				RA
-		clearBit(PORTD,1);		//Row B				RB
-		clearBit(PORTD,2);		//Row C				RC
-		clearBit(PORTD,3);		//Row Enable		RE
-		clearBit(PORTD,5);		//Subsegment A		EA
-		clearBit(PORTD,6);		//Subsegment B		EB
-		clearBit(PORTD,7);		//Subsegment C		EC
-		clearBit(PORTC,0);		//Segment A			Internal (SA)
-		clearBit(PORTC,1);		//Segment B			Internal (SB)
-		clearBit(PORTC,2);		//Segment C			Internal (SC)
-	
-	PORTB |= (f_data[0]<<0);		//A					MCU 2
-	PORTB |= (f_data[1]<<1);		//B					MCU 3
-	PORTB |= (f_data[2]<<2);		//C					MCU 4
-	PORTB |= (f_data[3]<<3);		//Row A				MCU 8
-	PORTB |= (f_data[4]<<4);		//Row B				MCU 9
-	PORTB |= (f_data[5]<<5);		//Row C				MCU 10
-	PORTB |= (f_data[6]<<6);		//Subsegment A		MCU 5
-	PORTB |= (f_data[7]<<7);		//Subsegment B		MCU 6
-	PORTD |= (f_data[8]<<0);		//Subsegment C		MCU 7
-	PORTD |= (f_data[9]<<1);		//RE PIN MISSING FROM DESIGN!!!!!!!
+		
+	//	I/O pins								NAME				CONNECTOR NAME
+	changeBit(PORTB,0,f_outputPinData[7]);		//A					A
+	changeBit(PORTB,1,f_outputPinData[8]);		//B					B
+	changeBit(PORTB,2,f_outputPinData[9]);		//C					C
+	changeBit(PORTD,0,f_outputPinData[1]);		//Row A				RA
+	changeBit(PORTD,1,f_outputPinData[2]);		//Row B				RB
+	changeBit(PORTD,2,f_outputPinData[3]);		//Row C				RC
+	changeBit(PORTD,5,f_outputPinData[4]);		//Subsegment A		EA
+	changeBit(PORTD,6,f_outputPinData[5]);		//Subsegment B		EB
+	changeBit(PORTD,7,f_outputPinData[6]);		//Subsegment C		EC
+	changeBit(PORTD,3,f_outputPinData[0]);		//Row Enable		RE
 
-	PORTD |= (f_data[]<<1);		//Segment A			Internal
-	PORTD |= (f_data[]<<2);		//Segment B			Internal
-	PORTD |= (f_data[]<<3);		//Segment C			Internal
-	  
-	  //digitalWrite(RE, data[0]);
-	  //digitalWrite(RA, data[1]);
-	  //digitalWrite(RB, data[2]);
-	  //digitalWrite(RC, data[3]);
-	  //digitalWrite(EA, data[4]);
-	  //digitalWrite(EB, data[5]);
-	  //digitalWrite(EC, data[6]);
-	  //digitalWrite(A, data[7]);
-	  //digitalWrite(B, data[8]);
-	  //digitalWrite(C, data[9]);
-//
-	  //resetPins();
+	//TODO: Add multi-segment management (preset for segment 1 soldered)
+	changeBit(PORTC,0,1);						//Segment A			Internal(SA)
+	changeBit(PORTC,1,0);						//Segment B			Internal(SB)
+	changeBit(PORTC,2,0);						//Segment C			Internal(SC)
+	
+	 Flipdot_resetPins();
 }
