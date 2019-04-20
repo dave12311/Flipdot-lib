@@ -131,37 +131,37 @@ void Flipdot_writeBuffer (uint8_t style){
 			for(uint8_t x = 0;x < 24;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
-					}else{
+				}else{
 					Flipdot_writePixel(x,y,0);
 				}
 			}
 		}
-		}else if(style == 1){
+	}else if(style == 1){
 		for(uint8_t y = 6;y >= 0;y--){
 			for(uint8_t x = 0;x < 24;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
-					}else{
+				}else{
 					Flipdot_writePixel(x,y,0);
 				}
 			}
 		}
-		}else if(style == 2){
+	}else if(style == 2){
 		for(uint8_t x = 0;x < 24;x++){
 			for(uint8_t y = 0;y < 7;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
-					}else{
+				}else{
 					Flipdot_writePixel(x,y,0);
 				}
 			}
 		}
-		}else if(style == 3){
+	}else if(style == 3){
 		for(uint8_t x = 23;x >= 0;x--){
 			for(uint8_t y = 0;y < 7;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
-					}else{
+				}else{
 					Flipdot_writePixel(x,y,0);
 				}
 			}
@@ -223,11 +223,11 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 		}else{
 			if(!x_mod && !y_mod){
 				Flipdot_setOutputPinData(x,y,1,1);
-				}else if(!x_mod && y_mod){
+			}else if(!x_mod && y_mod){
 				Flipdot_setOutputPinData(x,y,1,0);
-				}else if(x_mod && !y_mod){
+			}else if(x_mod && !y_mod){
 				Flipdot_setOutputPinData(x,y,0,1);
-				}else if(x_mod && y_mod){
+			}else if(x_mod && y_mod){
 				Flipdot_setOutputPinData(x,y,0,0);
 			}
 		}
@@ -251,4 +251,49 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 	changeBit(PORTC,2,0);						//Segment C			Internal(SC)
 	
 	 Flipdot_resetPins();
+}
+
+void Flipdot_fillScreen (uint8_t state){
+	if(state == 0 || state == 1){
+		for(uint8_t y = 0;y < YMAX;y++){
+			for(uint8_t x = 0;x < XMAX;x++){
+				Flipdot_writePixel(x,y,state);
+			}
+		}
+	}
+}
+
+void Flipdot_setLetter (uint8_t letter, uint8_t indent){
+		if(letter <= FONTS && letter > 0 && indent < XMAX){
+			uint8_t count = 0;
+			//Find first byte of letter (count)
+			for(uint8_t i = 0;i < letter;){
+				while(1){
+					if((font[count] & (1 << 7) >> 7) == 1){
+						count++;
+						break;
+					}
+					count++;
+				}
+				i++;
+			}
+			count--;
+
+			uint8_t x = indent;
+			while(1){
+				for(uint8_t y = 0; y < 7;y++){
+					if((font[count] & (1 << y) >> y) == 0){
+						Flipdot_setBuffer(x,6-y,0);
+					} else {
+						Flipdot_setBuffer(x,6-y,1);
+					}
+				}
+				x++;
+				if((font[count+1] & (1 << 7) >> 7) == 1 || (x+1) > XMAX){
+					break;
+				} else {
+					count++;
+				}
+			}
+		}
 }
