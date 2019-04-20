@@ -101,7 +101,7 @@ void Flipdot_delay (uint8_t t){
 	setBit(TIFR0,1);		//Clear flag
 }
 
-void Flipdot_setDelay (uint16_t delay){
+void Flipdot_setDelay (uint8_t delay){
 	if(delay > 0 && delay < 50){
 		f_writeDelay = delay;
 	} else {
@@ -125,7 +125,7 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   }
 }
 
-void Flipdot_writeBuffer (uint8_t style){
+void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 	if(style == 0){
 		for(uint8_t y = 0;y < 7;y++){
 			for(uint8_t x = 0;x < 24;x++){
@@ -134,6 +134,7 @@ void Flipdot_writeBuffer (uint8_t style){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
+				Flipdot_delay(delay);
 			}
 		}
 	}else if(style == 1){
@@ -144,6 +145,7 @@ void Flipdot_writeBuffer (uint8_t style){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
+				Flipdot_delay(delay);
 			}
 		}
 	}else if(style == 2){
@@ -154,6 +156,7 @@ void Flipdot_writeBuffer (uint8_t style){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
+				Flipdot_delay(delay);
 			}
 		}
 	}else if(style == 3){
@@ -164,6 +167,7 @@ void Flipdot_writeBuffer (uint8_t style){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
+				Flipdot_delay(delay);
 			}
 		}
 	}
