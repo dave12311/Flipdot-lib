@@ -11,9 +11,15 @@
 //Number of microseconds each pixel is held high for magnetization
 #define DEFAULT_DELAY 6		//6*125ns = 750ns
 
+//Maximum magnetization length allowed
+#define DELMAX 50
+
 //Size of a segment
 #define XMAX 24
 #define YMAX 7
+
+//Number of segments
+#define SEGNUM 4
 
 //Number of programmed characters
 #define FONTS 45
@@ -36,7 +42,7 @@ void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t 
 void Flipdot_delay(uint8_t t);																	//Delay t*125ns @8MHz
 
 /* ----------------------------------------------------- Internal variables ------------------------------------------------------ */
-uint8_t f_frameBuffer[24];
+uint8_t f_frameBuffer[XMAX];
 uint8_t f_outputPinData[10];
 uint8_t f_writeDelay;
 

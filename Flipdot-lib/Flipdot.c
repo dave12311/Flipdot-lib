@@ -19,8 +19,8 @@
 #define changeBit(A,B,C) (((C & 1) == 1) ? setBit(A,B) : clearBit(A,B))		//Set the [B]-th bit of [A] to [C]
 
 //DATA
-const uint8_t PROGMEM columns[24][2] = { {0b010100,0b110100},{0b110010,0b010010},{0b010000,0b110000},{0b110110,0b010110},{0b011011,0b101011},{0b110001,0b010001},{0b011101,0b101101},{0b110101,0b010101},{0b011001,0b101001},{0b110011,0b010011},{0b011110,0b101110},{0b100000,0b001000},{0b011010,0b101010},{0b100100,0b001100},{0b011100,0b101100},{0b100010,0b001010},{0b011000,0b101000},{0b100110,0b001110},{0b111111,0b111010},{0b100001,0b001001},{0b111011,0b111100},{0b100101,0b001101},{0b111101,0b111000},{0b100011,0b001011}  };
-const uint8_t PROGMEM rows[7][2] = {  {0b0111,0b1100},{0b1010,0b0011},{0b0101,0b1110},{0b1001,0b0001},{0b0110,0b1101},{0b1011,0b0010},{0b0100,0b1111}  };
+const uint8_t PROGMEM columns[XMAX][2] = { {0b010100,0b110100},{0b110010,0b010010},{0b010000,0b110000},{0b110110,0b010110},{0b011011,0b101011},{0b110001,0b010001},{0b011101,0b101101},{0b110101,0b010101},{0b011001,0b101001},{0b110011,0b010011},{0b011110,0b101110},{0b100000,0b001000},{0b011010,0b101010},{0b100100,0b001100},{0b011100,0b101100},{0b100010,0b001010},{0b011000,0b101000},{0b100110,0b001110},{0b111111,0b111010},{0b100001,0b001001},{0b111011,0b111100},{0b100101,0b001101},{0b111101,0b111000},{0b100011,0b001011}  };
+const uint8_t PROGMEM rows[YMAX][2] = {  {0b0111,0b1100},{0b1010,0b0011},{0b0101,0b1110},{0b1001,0b0001},{0b0110,0b1101},{0b1011,0b0010},{0b0100,0b1111}  };
 const uint8_t PROGMEM font[205] = {
 	/*A:*/ 0b10111111, 0b01001000, 0b01001000, 0b00111111,
 	/*B:*/ 0b11111111, 0b01001001, 0b01001001, 0b00110110,
@@ -102,7 +102,7 @@ void Flipdot_delay (uint8_t t){
 }
 
 void Flipdot_setDelay (uint8_t delay){
-	if(delay > 0 && delay < 50){
+	if(delay > 0 && delay < DELMAX){
 		f_writeDelay = delay;
 	} else {
 		f_writeDelay = DEFAULT_DELAY;
@@ -110,7 +110,7 @@ void Flipdot_setDelay (uint8_t delay){
 }
 
 void Flipdot_clearBuffer (void){
-	for(uint8_t i=0;i<24;i++){
+	for(uint8_t i=0;i<XMAX;i++){
 		f_frameBuffer[i] = 0;
 	}
 }
@@ -127,8 +127,8 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
 
 void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 	if(style == 0){
-		for(uint8_t y = 0;y < 7;y++){
-			for(uint8_t x = 0;x < 24;x++){
+		for(uint8_t y = 0;y < YMAX;y++){
+			for(uint8_t x = 0;x < XMAX;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
@@ -138,8 +138,8 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 			}
 		}
 	}else if(style == 1){
-		for(uint8_t y = 6;y >= 0;y--){
-			for(uint8_t x = 0;x < 24;x++){
+		for(uint8_t y = (YMAX-1);y >= 0;y--){
+			for(uint8_t x = 0;x < XMAX;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
@@ -149,8 +149,8 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 			}
 		}
 	}else if(style == 2){
-		for(uint8_t x = 0;x < 24;x++){
-			for(uint8_t y = 0;y < 7;y++){
+		for(uint8_t x = 0;x < XMAX;x++){
+			for(uint8_t y = 0;y < YMAX;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
@@ -160,8 +160,8 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 			}
 		}
 	}else if(style == 3){
-		for(uint8_t x = 23;x >= 0;x--){
-			for(uint8_t y = 0;y < 7;y++){
+		for(uint8_t x = (XMAX-1);x >= 0;x--){
+			for(uint8_t y = 0;y < YMAX;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
