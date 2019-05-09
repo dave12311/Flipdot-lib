@@ -141,6 +141,9 @@
     <Compile Include="Flipdot.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Flipdot_pins.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>

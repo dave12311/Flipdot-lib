@@ -1,12 +1,6 @@
 /*
   Flipdot.cpp - Basic functionality for Flipdot controllers.
   The cake is a lie.
-  
-  NOTE:
-  I/O PINS MUST BE CHANGED UNDER:
-	- Flipdot_resetPins()
-	- Flipdot_init()
-	- Flipdot_writePixel()
 */
 
 #include "Flipdot.h"
@@ -75,21 +69,20 @@ const uint8_t PROGMEM font[205] = {
 void Flipdot_resetPins (void){
 	Flipdot_delay(f_writeDelay);
 
-	//	I/O pins		    NAME				CONNECTOR NAME
-	clearBit(PORTB,0);		//A					A
-	clearBit(PORTB,1);		//B					B
-	clearBit(PORTB,2);		//C					C
-	clearBit(PORTD,0);		//Row A				RA
-	clearBit(PORTD,1);		//Row B				RB
-	clearBit(PORTD,2);		//Row C				RC
-	clearBit(PORTD,3);		//Row Enable		RE
-	clearBit(PORTD,5);		//Subsegment A		EA
-	clearBit(PORTD,6);		//Subsegment B		EB
-	clearBit(PORTD,7);		//Subsegment C		EC
-	
-	clearBit(PORTC,0);		//Segment A			Internal (SA)
-	clearBit(PORTC,1);		//Segment B			Internal (SB)
-	clearBit(PORTC,2);		//Segment C			Internal (SC)		
+	//Set all outputs to 0
+	clearBit(f_PORT_A, f_BIT_A);
+	clearBit(f_PORT_B, f_BIT_B);
+	clearBit(f_PORT_C, f_BIT_C);
+	clearBit(f_PORT_RA, f_BIT_RA);
+	clearBit(f_PORT_RB, f_BIT_RB);
+	clearBit(f_PORT_RC, f_BIT_RC);
+	clearBit(f_PORT_RE, f_BIT_RE);
+	clearBit(f_PORT_EA, f_BIT_EA);
+	clearBit(f_PORT_EB, f_BIT_EB);
+	clearBit(f_PORT_EC, f_BIT_EC);
+	clearBit(f_PORT_SA, f_BIT_SA);
+	clearBit(f_PORT_SB, f_BIT_SB);
+	clearBit(f_PORT_SC, f_BIT_SC);
 }
 
 void Flipdot_delay (uint8_t t){
@@ -174,23 +167,21 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 }
 
 void Flipdot_init (void){
-	//Set output pins
-	
-	//	I/O pins		    NAME				CONNECTOR NAME
-	setBit(DDRB,0); 		//A					A
-	setBit(DDRB,1); 		//B					B
-	setBit(DDRB,2); 		//C					C
-	setBit(DDRD,0); 		//Row A				RA
-	setBit(DDRD,1); 		//Row B				RB
-	setBit(DDRD,2); 		//Row C				RC
-	setBit(DDRD,3); 		//Row Enable		RE
-	setBit(DDRD,5); 		//Subsegment A		EA
-	setBit(DDRD,6); 		//Subsegment B		EB
-	setBit(DDRD,7); 		//Subsegment C		EC
-	
-	setBit(DDRC,0); 		//Segment A			Internal (SA)
-	setBit(DDRC,1); 		//Segment B			Internal (SB)
-	setBit(DDRC,2); 		//Segment C			Internal (SC)
+	//Enable output pins
+
+	setBit(f_DDR_A, f_BIT_A);
+	setBit(f_DDR_B, f_BIT_B);
+	setBit(f_DDR_C, f_BIT_C);
+	setBit(f_DDR_RA, f_BIT_RA);
+	setBit(f_DDR_RB, f_BIT_RB);
+	setBit(f_DDR_RC, f_BIT_RC);
+	setBit(f_DDR_RE, f_BIT_RE);
+	setBit(f_DDR_EA, f_BIT_EA);
+	setBit(f_DDR_EB, f_BIT_EB);
+	setBit(f_DDR_EC, f_BIT_EC);
+	setBit(f_DDR_SA, f_BIT_SA);
+	setBit(f_DDR_SB, f_BIT_SB);
+	setBit(f_DDR_SC, f_BIT_SC);
 	
 	Flipdot_clearBuffer();
 }
@@ -237,22 +228,22 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 		}
 	}
 		
-	//	I/O pins								NAME				CONNECTOR NAME
-	changeBit(PORTB,0,f_outputPinData[7]);		//A					A
-	changeBit(PORTB,1,f_outputPinData[8]);		//B					B
-	changeBit(PORTB,2,f_outputPinData[9]);		//C					C
-	changeBit(PORTD,0,f_outputPinData[1]);		//Row A				RA
-	changeBit(PORTD,1,f_outputPinData[2]);		//Row B				RB
-	changeBit(PORTD,2,f_outputPinData[3]);		//Row C				RC
-	changeBit(PORTD,5,f_outputPinData[4]);		//Subsegment A		EA
-	changeBit(PORTD,6,f_outputPinData[5]);		//Subsegment B		EB
-	changeBit(PORTD,7,f_outputPinData[6]);		//Subsegment C		EC
-	changeBit(PORTD,3,f_outputPinData[0]);		//Row Enable		RE
+	//	I/O pins											NAME				CONNECTOR NAME
+	changeBit(f_PORT_A, f_BIT_A, f_outputPinData[7]);		//A					A
+	changeBit(f_PORT_B, f_BIT_B, f_outputPinData[8]);		//B					B
+	changeBit(f_PORT_C, f_BIT_C, f_outputPinData[9]);		//C					C
+	changeBit(f_PORT_RA, f_BIT_RA, f_outputPinData[1]);		//Row A				RA
+	changeBit(f_PORT_RB, f_BIT_RB, f_outputPinData[2]);		//Row B				RB
+	changeBit(f_PORT_RC, f_BIT_RC, f_outputPinData[3]);		//Row C				RC
+	changeBit(f_PORT_EA, f_BIT_SA, f_outputPinData[4]);		//Subsegment A		EA
+	changeBit(f_PORT_EB, f_BIT_SB, f_outputPinData[5]);		//Subsegment B		EB
+	changeBit(f_PORT_EC, f_BIT_SC, f_outputPinData[6]);		//Subsegment C		EC
+	changeBit(f_PORT_RE, f_BIT_RE, f_outputPinData[0]);		//Row Enable		RE
 
 	//TODO: Add multi-segment management (preset for segment 1 soldered)
-	changeBit(PORTC,0,1);						//Segment A			Internal(SA)
-	changeBit(PORTC,1,0);						//Segment B			Internal(SB)
-	changeBit(PORTC,2,0);						//Segment C			Internal(SC)
+	changeBit(f_PORT_SA, f_BIT_SA, 1);						//Segment A			Internal(SA)
+	changeBit(f_PORT_SB, f_BIT_SB, 0);						//Segment B			Internal(SB)
+	changeBit(f_PORT_SC, f_BIT_SC, 0);						//Segment C			Internal(SC)
 	
 	 Flipdot_resetPins();
 }

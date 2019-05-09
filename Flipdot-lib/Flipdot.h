@@ -1,7 +1,12 @@
 /*
   Flipdot.h - Basic functionality for Flipdot controllers.
   The cake is a lie.
+  
+  NOTE:
+	Pin definitions can be changed in "Flipdot_pins.h"
 */
+
+#include "Flipdot_pins.h"
 #include <stdint.h>
 #include <avr/pgmspace.h>
 
