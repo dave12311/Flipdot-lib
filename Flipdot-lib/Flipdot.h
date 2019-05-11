@@ -45,7 +45,7 @@ void Flipdot_clearBuffer (void);																//Clears the internal buffer
 
 void Flipdot_resetPins (void);																	//Sets all output to LOW after delay
 void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t columnInvert);	//Decodes pixel locations in data register
-void Flipdot_delay(uint16_t t);																	//Delay
+void Flipdot_delay(uint16_t n);																	//Delay [t] seconds: n=(8e6*t-1110)/1024
 
 /* ----------------------------------------------------- Internal variables ------------------------------------------------------ */
 uint8_t f_frameBuffer[XMAX];
