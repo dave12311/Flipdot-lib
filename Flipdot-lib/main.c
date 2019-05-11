@@ -2,10 +2,21 @@
 
 int main(void){
 	Flipdot_init();
-	Flipdot_fillScreen(0);
-	Flipdot_writePixel(0,0,1);
-	Flipdot_setBuffer(1,1,0);
-	Flipdot_setLetter(1,5);
-	Flipdot_writeBuffer(3,0);
+	
+	while(1){
+			for(uint8_t x=0;x<24;x++){
+				for(uint8_t y=0;y<7;y++){
+					Flipdot_writePixel(x,y,1);
+					Flipdot_delay(200);
+				}
+			}
+			
+			for(uint8_t x=0;x<24;x++){
+				for(uint8_t y=0;y<7;y++){
+					Flipdot_writePixel(x,y,0);
+					Flipdot_delay(200);
+				}
+			}
+	}
 }
 

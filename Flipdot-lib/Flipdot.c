@@ -87,7 +87,8 @@ void Flipdot_resetPins (void){
 
 void Flipdot_delay (uint8_t t){
 	OCR0A = t;				//Set output compare to parameter
-	setBit(TCCR0B,0);		//Set clk/1 as source START
+	setBit(TCCR0B,1);		//Set clk/64 as source START
+	setBit(TCCR0B,0);
 	while(!(TIFR0 & 2));	//Wait...
 	clearBit(TCCR0B,0);		//STOP
 	TCNT0 = 0;				//Clear timer counter
