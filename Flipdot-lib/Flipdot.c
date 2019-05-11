@@ -87,16 +87,15 @@ void Flipdot_resetPins (void){
 
 void Flipdot_delay (uint8_t t){
 	OCR0A = t;				//Set output compare to parameter
-	setBit(TCCR0B,1);		//Set clk/64 as source START
-	setBit(TCCR0B,0);
+	TCCR0B = 5;				//Set clk/1024 as source, START
 	while(!(TIFR0 & 2));	//Wait...
-	clearBit(TCCR0B,0);		//STOP
+	TCCR0B = 0;				//STOP
 	TCNT0 = 0;				//Clear timer counter
 	setBit(TIFR0,1);		//Clear flag
 }
 
 void Flipdot_setDelay (uint8_t delay){
-	if(delay > 0 && delay < DELMAX){
+	if(delay > DELMIN && delay < DELMAX){
 		f_writeDelay = delay;
 	} else {
 		f_writeDelay = DEFAULT_DELAY;
@@ -238,9 +237,9 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
 	changeBit(f_PORT_RA, f_BIT_RA, f_outputPinData[1]);		//Row A				RA
 	changeBit(f_PORT_RB, f_BIT_RB, f_outputPinData[2]);		//Row B				RB
 	changeBit(f_PORT_RC, f_BIT_RC, f_outputPinData[3]);		//Row C				RC
-	changeBit(f_PORT_EA, f_BIT_SA, f_outputPinData[4]);		//Subsegment A		EA
-	changeBit(f_PORT_EB, f_BIT_SB, f_outputPinData[5]);		//Subsegment B		EB
-	changeBit(f_PORT_EC, f_BIT_SC, f_outputPinData[6]);		//Subsegment C		EC
+	changeBit(f_PORT_EA, f_BIT_EA, f_outputPinData[4]);		//Subsegment A		EA
+	changeBit(f_PORT_EB, f_BIT_EB, f_outputPinData[5]);		//Subsegment B		EB
+	changeBit(f_PORT_EC, f_BIT_EC, f_outputPinData[6]);		//Subsegment C		EC
 	changeBit(f_PORT_RE, f_BIT_RE, f_outputPinData[0]);		//Row Enable		RE
 
 	//TODO: Add multi-segment management (preset for segment 1 soldered)
