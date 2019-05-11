@@ -2,23 +2,34 @@
 
 int main(void){
 	Flipdot_init();
-	Flipdot_setDelay(3);
-	Flipdot_delay(938);
-	
+	Flipdot_setLetter(1,0);
+	Flipdot_setLetter(2,5);
+	Flipdot_setLetter(3,10);
+	Flipdot_setLetter(4,15);
+	Flipdot_setLetter(5,20);
+	uint16_t t_delay = 0;
 	while(1){
-		for(uint8_t x=0;x<24;x++){
-			for(uint8_t y=0;y<7;y++){
-				Flipdot_writePixel(x,y,1);
-			}
-		}
-		Flipdot_delay(255);
-			
-		for(uint8_t x=0;x<24;x++){
-			for(uint8_t y=0;y<7;y++){
-				Flipdot_writePixel(x,y,0);
-			}
-		}
-		Flipdot_delay(255);
+		Flipdot_writeBuffer(0,t_delay);
+		Flipdot_delay(7811);
+		Flipdot_fillScreen(0);
+		Flipdot_delay(7811);
+		
+		Flipdot_writeBuffer(1,t_delay);
+		Flipdot_delay(7811);
+		Flipdot_fillScreen(0);
+		Flipdot_delay(7811);
+		
+		Flipdot_writeBuffer(2,t_delay);
+		Flipdot_delay(7811);
+		Flipdot_fillScreen(0);
+		Flipdot_delay(7811);
+		
+		Flipdot_writeBuffer(3,t_delay);
+		Flipdot_delay(7811);
+		Flipdot_fillScreen(0);
+		Flipdot_delay(7811);
+		
+		t_delay++;
 	}
 }
 
