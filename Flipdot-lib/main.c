@@ -3,6 +3,7 @@
 int main(void){
 	Flipdot_init();
 	Flipdot_setDelay(3);
+	Flipdot_delay(938);
 	
 	while(1){
 		for(uint8_t x=0;x<24;x++){

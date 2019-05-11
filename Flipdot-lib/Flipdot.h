@@ -14,7 +14,7 @@
 #define Flipdot_h
 
 //Number of microseconds each pixel is held high for magnetization
-#define DEFAULT_DELAY 8		//70*7.36us = 500us
+#define DEFAULT_DELAY 8
 
 //Maximum and minimum magnetization length allowed
 #define DELMAX 15
@@ -45,7 +45,7 @@ void Flipdot_clearBuffer (void);																//Clears the internal buffer
 
 void Flipdot_resetPins (void);																	//Sets all output to LOW after delay
 void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t columnInvert);	//Decodes pixel locations in data register
-void Flipdot_delay(uint8_t t);																	//Delay t*7.36us @8MHz
+void Flipdot_delay(uint16_t t);																	//Delay
 
 /* ----------------------------------------------------- Internal variables ------------------------------------------------------ */
 uint8_t f_frameBuffer[XMAX];

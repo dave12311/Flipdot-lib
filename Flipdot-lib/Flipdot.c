@@ -85,13 +85,13 @@ void Flipdot_resetPins (void){
 	clearBit(f_PORT_SC, f_BIT_SC);
 }
 
-void Flipdot_delay (uint8_t t){
-	OCR0A = t;				//Set output compare to parameter
-	TCCR0B = 5;				//Set clk/1024 as source, START
-	while(!(TIFR0 & 2));	//Wait...
-	TCCR0B = 0;				//STOP
-	TCNT0 = 0;				//Clear timer counter
-	setBit(TIFR0,1);		//Clear flag
+void Flipdot_delay (uint16_t t){
+	OCR1A = t;				//Set output compare to parameter
+	TCCR1B = 5;				//Set clk/1024 as source, START
+	while(!(TIFR1 & 2));	//Wait...
+	TCCR1B = 0;				//STOP
+	TCNT1 = 0;				//Clear timer counter
+	setBit(TIFR1,1);		//Clear flag
 }
 
 void Flipdot_setDelay (uint8_t delay){
