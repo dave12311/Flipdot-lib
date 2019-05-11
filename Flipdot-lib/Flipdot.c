@@ -185,6 +185,8 @@ void Flipdot_init (void){
 	setBit(f_DDR_SC, f_BIT_SC);
 	
 	Flipdot_clearBuffer();
+	
+	f_writeDelay = DEFAULT_DELAY;
 }
 
 void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t columnInvert){
