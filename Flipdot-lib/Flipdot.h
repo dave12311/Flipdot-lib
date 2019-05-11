@@ -14,7 +14,7 @@
 #define Flipdot_h
 
 //Number of microseconds each pixel is held high for magnetization
-#define DEFAULT_DELAY 8
+#define DEFAULT_DELAY 5
 
 //Maximum and minimum magnetization length allowed
 #define DELMAX 15

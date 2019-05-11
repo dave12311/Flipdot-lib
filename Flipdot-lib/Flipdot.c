@@ -127,18 +127,22 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
-				Flipdot_delay(delay);
+				if(delay > 0){
+					Flipdot_delay(delay);
+				}
 			}
 		}
 	}else if(style == 1){
-		for(uint8_t y = (YMAX-1);y >= 0;y--){
+		for(int8_t y = (YMAX-1);y >= 0;y--){
 			for(uint8_t x = 0;x < XMAX;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
-				Flipdot_delay(delay);
+				if(delay > 0){
+					Flipdot_delay(delay);
+				}
 			}
 		}
 	}else if(style == 2){
@@ -149,18 +153,22 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
-				Flipdot_delay(delay);
+				if(delay > 0){
+					Flipdot_delay(delay);
+				}
 			}
 		}
 	}else if(style == 3){
-		for(uint8_t x = (XMAX-1);x >= 0;x--){
+		for(int8_t x = (XMAX-1);x >= 0;x--){
 			for(uint8_t y = 0;y < YMAX;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
 					Flipdot_writePixel(x,y,1);
 				}else{
 					Flipdot_writePixel(x,y,0);
 				}
-				Flipdot_delay(delay);
+				if(delay > 0){
+					Flipdot_delay(delay);
+				}
 			}
 		}
 	}
