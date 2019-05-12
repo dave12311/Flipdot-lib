@@ -118,8 +118,8 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   }
 }
 
-void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
-	if(style == 0){
+void Flipdot_writeBuffer (enum Style style, uint8_t delay){
+	if(style == down){
 		for(uint8_t y = 0;y < YMAX;y++){
 			for(uint8_t x = 0;x < XMAX;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
@@ -132,7 +132,7 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 				}
 			}
 		}
-	}else if(style == 1){
+	}else if(style == up){
 		for(int8_t y = (YMAX-1);y >= 0;y--){
 			for(uint8_t x = 0;x < XMAX;x++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
@@ -145,7 +145,7 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 				}
 			}
 		}
-	}else if(style == 2){
+	}else if(style == right){
 		for(uint8_t x = 0;x < XMAX;x++){
 			for(uint8_t y = 0;y < YMAX;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
@@ -158,7 +158,7 @@ void Flipdot_writeBuffer (uint8_t style, uint8_t delay){
 				}
 			}
 		}
-	}else if(style == 3){
+	}else if(style == left){
 		for(int8_t x = (XMAX-1);x >= 0;x--){
 			for(uint8_t y = 0;y < YMAX;y++){
 				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){

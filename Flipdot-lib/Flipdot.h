@@ -30,6 +30,8 @@
 //Number of programmed characters
 #define FONTS 45
 
+enum Style{down,up,right,left};
+
 /* ---------------------------------------------------------- Functions ---------------------------------------------------------- */
 
 void Flipdot_init (void);																		//Initialize the library
@@ -38,7 +40,7 @@ void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state);									//Writes 
 void Flipdot_fillScreen (uint8_t state);														//Fills the whole screen with 0 or 1
 uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent);										//Sets the specified letter in buffer with the specified indent. Returns the length of the letter
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state);									//Sets the given pixel in the buffer
-void Flipdot_writeBuffer (uint8_t style, uint8_t delay);										//Writes the screen buffer to the screen with the given update style [0:down; 1:up; 2:right; 3:left] and waits [delay*125ns @8MHz] between each pixel
+void Flipdot_writeBuffer (enum Style style, uint8_t delay);										//Writes the screen buffer to the screen with the given update style [down; up; right; left] and passes [delay] to Flipdot_delay(n) between each pixel
 void Flipdot_clearBuffer (void);																//Clears the internal buffer
 
 /* ----------------------------------------------------- Internal functions ------------------------------------------------------ */
