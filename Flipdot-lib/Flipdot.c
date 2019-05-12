@@ -1,20 +1,80 @@
-/*
-  Flipdot.cpp - Basic functionality for Flipdot controllers.
-  The cake is a lie.
+/**
+ * @file Flipdot.c
+ * @author David Horvath
+ * @brief Basic functionality for Flipdot controllers.
 */
+
+//The cake is a lie.
 
 #include "Flipdot.h"
 #include <stdint.h>
 #include <avr/io.h>
 
-//Bit macros
-#define clearBit(A,B) (A &= ~(1<<B))										//Set the [B]-th bit of [A] to  0
-#define setBit(A,B) (A |= (1<<B))											//Set the [B]-th bit of [A] to  1
-#define changeBit(A,B,C) (((C & 1) == 1) ? setBit(A,B) : clearBit(A,B))		//Set the [B]-th bit of [A] to [C]
+/************************************************************************/
+/*                          BIT MACROS                                  */
+/************************************************************************/
 
-//DATA
+/**
+ * @brief Set a single bit to 0.
+ *
+ * Set the @b B-th bit of @b A to @b 0.
+ * @param A The variable being changed.
+ * @param B The number of the bit being changed.
+ */
+#define clearBit(A,B) (A &= ~(1<<B))
+
+/**
+ * @brief Set a single bit to 1.
+ *
+ * Set the @b B-th bit of @b A to @b 1.
+ * @param A The variable being changed.
+ * @param B The number of the bit being changed.
+ */
+#define setBit(A,B) (A |= (1<<B))
+
+/**
+ * @brief Change the value of a single bit.
+ *
+ * Set the @b B-th bit of @b A to @b C.
+ * @param A The variable being changed.
+ * @param B The number of the bit being changed.
+ * @param C The value the bit is being changed to.
+ */
+#define changeBit(A,B,C) (((C & 1) == 1) ? setBit(A,B) : clearBit(A,B))
+
+/************************************************************************/
+/*                               DATA                                   */
+/************************************************************************/
+
+/**
+ * @brief Decoded pixel data for column drivers.
+ *
+ * Contains the correct output states for the column drivers to switch a pixel.
+ * The corresponding outputs are from MSB to LSB: <b>EA, EB, EC, A, B, C</b>
+ * @see Flipdot_setOutputPinData
+ */
 const uint8_t PROGMEM columns[XMAX][2] = {  {0b001100,0b110100},{0b110010,0b001010},{0b001000,0b110000},{0b110110,0b001110},{0b011011,0b101011},{0b110001,0b001001},{0b011101,0b101101},{0b110101,0b001101},{0b011001,0b101001},{0b110011,0b001011},{0b011110,0b101110},{0b100000,0b010000},{0b011010,0b101010},{0b100100,0b010100},{0b011100,0b101100},{0b100010,0b010010},{0b011000,0b101000},{0b100110,0b010110},{0b111111,0b111010},{0b100001,0b010001},{0b111011,0b111100},{0b100101,0b010101},{0b111101,0b111000},{0b100011,0b010011}  };
+
+/**
+ * @brief Decoded pixel data for row drivers.
+ *
+ * Contains the correct output states for the row drivers to switch a pixel.
+ * The corresponding outputs are from MSB to LSB: <b>RE, RA, RB, RC</b>
+ * @see Flipdot_setOutputPinData
+ */
 const uint8_t PROGMEM rows[YMAX][2] = {  {0b0111,0b1100},{0b1010,0b0011},{0b0101,0b1110},{0b1001,0b0001},{0b0110,0b1101},{0b1011,0b0010},{0b0100,0b1111}  };
+
+/**
+ * @brief Preprogrammed font data.
+ *
+ * Contains the data for each programmed character.
+ * As the display is 7 pixels high, the first bit is used to determine the first byte of each character.
+ * The MSB of the first byte of each character @b MUST be @b 1.
+ * The character are encoded as each row, from top to bottom, from MSB to LSB.
+ * @warning The number of programmed fonts @b MUST be updated in @b FONTS.
+ * @see FONTS
+ * @see Flipdot_setLetter
+ */
 const uint8_t PROGMEM font[205] = {
 	/*A:*/ 0b10111111, 0b01001000, 0b01001000, 0b00111111,
 	/*B:*/ 0b11111111, 0b01001001, 0b01001001, 0b00110110,

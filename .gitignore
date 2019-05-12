@@ -14,3 +14,7 @@
 #User Specific Files
 *.atsuo
 *.componentinfo.xml
+
+#Doxygen
+doxygen/
+doxySettings.xml
