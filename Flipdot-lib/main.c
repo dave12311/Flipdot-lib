@@ -2,7 +2,7 @@
 
 int main(void){
 	Flipdot_init();
-	Flipdot_setDelay(3);
+	//Flipdot_setDelay(3);
 
 	Flipdot_setLetter(1,0);
 	Flipdot_setLetter(2,5);
@@ -32,7 +32,7 @@ int main(void){
 		Flipdot_fillScreen(0);
 		Flipdot_delay(7811);
 		
-		t_delay++;
+		//t_delay++;
 	}
 }
 

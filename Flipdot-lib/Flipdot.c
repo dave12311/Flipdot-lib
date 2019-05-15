@@ -53,7 +53,32 @@
  * The corresponding outputs are from MSB to LSB: <b>EA, EB, EC, A, B, C</b>
  * @see Flipdot_setOutputPinData
  */
-const uint8_t PROGMEM columns[XMAX][2] = {  {0b001100,0b110100},{0b110010,0b001010},{0b001000,0b110000},{0b110110,0b001110},{0b011011,0b101011},{0b110001,0b001001},{0b011101,0b101101},{0b110101,0b001101},{0b011001,0b101001},{0b110011,0b001011},{0b011110,0b101110},{0b100000,0b010000},{0b011010,0b101010},{0b100100,0b010100},{0b011100,0b101100},{0b100010,0b010010},{0b011000,0b101000},{0b100110,0b010110},{0b111111,0b111010},{0b100001,0b010001},{0b111011,0b111100},{0b100101,0b010101},{0b111101,0b111000},{0b100011,0b010011}  };
+const uint8_t PROGMEM columns[XMAX][2] = {
+	{0b001100,0b110100},
+	{0b110010,0b001010},
+	{0b001000,0b110000},
+	{0b110110,0b001110},
+	{0b011011,0b101011},
+	{0b110001,0b001001},
+	{0b011101,0b101101},
+	{0b110101,0b001101},
+	{0b011001,0b101001},
+	{0b110011,0b001011},
+	{0b011110,0b101110},
+	{0b100000,0b010000},
+	{0b011010,0b101010},
+	{0b100100,0b010100},
+	{0b011100,0b101100},
+	{0b100010,0b010010},
+	{0b011000,0b101000},
+	{0b100110,0b010110},
+	{0b111111,0b111010},
+	{0b100001,0b010001},
+	{0b111011,0b111100},
+	{0b100101,0b010101},
+	{0b111101,0b111000},
+	{0b100011,0b010011}
+};
 
 /**
  * @brief Decoded pixel data for row drivers.
@@ -62,7 +87,15 @@ const uint8_t PROGMEM columns[XMAX][2] = {  {0b001100,0b110100},{0b110010,0b0010
  * The corresponding outputs are from MSB to LSB: <b>RE, RA, RB, RC</b>
  * @see Flipdot_setOutputPinData
  */
-const uint8_t PROGMEM rows[YMAX][2] = {  {0b0111,0b1100},{0b1010,0b0011},{0b0101,0b1110},{0b1001,0b0001},{0b0110,0b1101},{0b1011,0b0010},{0b0100,0b1111}  };
+const uint8_t PROGMEM rows[YMAX][2] = {
+	{0b0111,0b1100},
+	{0b1010,0b0011},
+	{0b0101,0b1110},
+	{0b1001,0b0001},
+	{0b0110,0b1101},
+	{0b1011,0b0010},
+	{0b0100,0b1111}
+};
 
 /**
  * @brief Preprogrammed font data.
@@ -272,6 +305,8 @@ void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t 
 }
 
 void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
+	x = XMAX-x-1;
+	y = YMAX-y-1;
 	if(x < XMAX && y < YMAX && state <= 1){
 		uint8_t x_mod = x % 2;
 		uint8_t y_mod = y % 2;
