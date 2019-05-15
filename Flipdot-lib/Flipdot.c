@@ -365,7 +365,8 @@ void Flipdot_fillScreen (uint8_t state){
 
 uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 		uint8_t length = 0;
-		if(letter <= FONTS && letter > 0 && indent < XMAX){
+		if(letter < FONTS && indent < XMAX){
+			letter++;
 			uint8_t arrayNum = 0;
 			//Find first byte of letter (arrayNum)
 			for(uint8_t i = 0;i < letter;){

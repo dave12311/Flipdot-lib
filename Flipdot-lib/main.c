@@ -4,11 +4,11 @@ int main(void){
 	Flipdot_init();
 	//Flipdot_setDelay(3);
 
-	Flipdot_setLetter(1,0);
-	Flipdot_setLetter(2,5);
-	Flipdot_setLetter(3,10);
-	Flipdot_setLetter(4,15);
-	Flipdot_setLetter(5,20);
+	Flipdot_setLetter(0,0);
+	Flipdot_setLetter(1,5);
+	Flipdot_setLetter(2,10);
+	Flipdot_setLetter(3,15);
+	Flipdot_setLetter(4,20);
 	uint16_t t_delay = 0;
 
 	while(1){
