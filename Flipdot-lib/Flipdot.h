@@ -61,6 +61,20 @@
 #define FONTS 134
 
 /**
+ * @brief Bold letters.
+ *
+ * Number of characters to offset for @b bold letters.
+ */
+#define BOLD 70
+
+/**
+ * @brief Semibold letters.
+ *
+ * Number of characters to offset for @b semibold letters.
+ */
+#define SEMIBOLD 35
+
+/**
  * @brief Display style.
  *
  * Refresh direction of the screen Can be @b down, @b up, @b right or @b left.
@@ -123,6 +137,15 @@ void Flipdot_fillScreen (uint8_t state);
 uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent);
 
 /**
+ * @brief Set a string in buffer automatically.
+ *
+ * Sets the given array of characters in the buffer. The function determines the font size and letter spacing automatically.
+ * @param length Number of letters.
+ * @param string Array containing the letters.
+ */
+void Flipdot_setString (uint8_t length, uint8_t*string);
+
+/**
  * @brief Set the value of a single pixel in the buffer.
  *
  * @param x X coordinate.
@@ -144,19 +167,6 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state);
  * @see f_frameBuffer_2
  */
 void Flipdot_writeBuffer (enum Style style, uint8_t delay);
-
-/**
- * @brief Write one pixel of the buffer to the screen.
- *
- * Writes on pixel of the @b f_framerBufferCurrent to the screen if it is different from the state of the pixel currently on the screen stored in @b f_frameBufferLast.
- * @param x X coordinate.
- * @param y Y coordinate.
- * @param delay Number of timer cycles to wait.
- * @see Flipdot_delay
- * @see f_frameBufferCurrent
- * @see f_frameBufferLast
- */
-void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay);
 
 /**
  * @brief Clear the buffer.
@@ -201,6 +211,27 @@ void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t 
  * @param n The number of timer cycles to wait.
  */
 void Flipdot_delay(uint16_t n);
+
+/**
+ * @brief Write one pixel of the buffer to the screen.
+ *
+ * Writes on pixel of the @b f_framerBufferCurrent to the screen if it is different from the state of the pixel currently on the screen stored in @b f_frameBufferLast.
+ * @param x X coordinate.
+ * @param y Y coordinate.
+ * @param delay Number of timer cycles to wait.
+ * @see Flipdot_delay
+ * @see f_frameBufferCurrent
+ * @see f_frameBufferLast
+ */
+void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay);
+
+/**
+ * @brief Center buffer.
+ *
+ * Centers the buffer contents on the screen.
+ * @param length The length of the contents of the buffer from the left.
+ */
+void Flipdot_centerBuffer (uint8_t length);
 
 /************************************************************************/
 /*                       INTERNAL VARIALBES                             */

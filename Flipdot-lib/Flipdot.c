@@ -357,10 +357,10 @@ void Flipdot_writeBuffer (enum Style style, uint8_t delay){
 	//Flip buffers
 	f_frameBufferLast = f_frameBufferCurrent;
 	if(f_frameBufferNum == 1){
-		f_frameBufferCurrent = &f_frameBuffer_2[0];
+		f_frameBufferCurrent = f_frameBuffer_2;
 		f_frameBufferNum = 2;
 	}else{
-		f_frameBufferCurrent = &f_frameBuffer_1[0];
+		f_frameBufferCurrent = f_frameBuffer_1;
 		f_frameBufferNum = 1;
 	}
 }
@@ -386,7 +386,7 @@ void Flipdot_init (void){
 	
 	f_writeDelay = DEFAULT_DELAY;
 	
-	f_frameBufferCurrent = &f_frameBuffer_1[0];
+	f_frameBufferCurrent = f_frameBuffer_1;
 	f_frameBufferNum = 1;
 	
 	f_frameBufferLast = 0;
@@ -503,4 +503,70 @@ uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 			}
 		}
 		return length;
+}
+
+void Flipdot_setString (uint8_t length, uint8_t*string){
+	uint8_t cursor = 0;			//Writing cursor
+	uint8_t l;					//Temp letter length
+	
+	//Try BOLD with 2 gaps
+	for(uint8_t letters = 0; letters<length; letters++){
+		l = Flipdot_setLetter(*(string+letters)+BOLD, cursor);
+		cursor += l+2;
+	}
+	
+	cursor -= 2;
+	
+	if(cursor<XMAX){
+		//BOLD fits with 2 gaps
+		Flipdot_centerBuffer(cursor);
+	}else if((cursor-length-1)<XMAX){
+		//BOLD fits with 1 gap
+		Flipdot_clearBuffer();
+		cursor = 0;
+		for(uint8_t letters = 0; letters<length; letters++){
+			l = Flipdot_setLetter(*(string+letters)+BOLD, cursor);
+			cursor++;
+		}
+		cursor--;
+		Flipdot_centerBuffer(cursor);
+	}else{
+		//Try SEMIBOLD with 2 gaps
+		Flipdot_clearBuffer();
+		cursor = 0;
+		for(uint8_t letters = 0; letters<length; letters++){
+			l = Flipdot_setLetter(*(string+letters)+SEMIBOLD, cursor);
+			cursor += l+2;
+		}
+		cursor -= 2;
+		if(cursor<XMAX){
+			//SEMIBOLD fits with 2 gaps
+			Flipdot_centerBuffer(cursor);
+		}else if((cursor-length-1)<XMAX){
+			//SEMIBOLD fits with 1 gap
+			Flipdot_clearBuffer();
+			cursor = 0;
+			for(uint8_t letters = 0; letters<length; letters++){
+				l = Flipdot_setLetter(*(string+letters)+SEMIBOLD, cursor);
+				cursor++;
+			}
+			cursor--;
+			Flipdot_centerBuffer(cursor);
+		}else{
+			//Try NORMAL
+			Flipdot_clearBuffer();
+			cursor = 0;
+			for(uint8_t letters = 0; letters<length; letters++){
+				l = Flipdot_setLetter(*(string+letters), cursor);
+				cursor++;
+			}
+			cursor--;
+			if(cursor<XMAX){
+				//NORMAL fits
+				Flipdot_centerBuffer(cursor);
+			}else{
+				//DOES NOT FIT
+			}
+		}
+	}
 }
