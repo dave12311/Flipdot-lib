@@ -41,23 +41,16 @@
 /**
  * @brief Horizontal size.
  *
- * Number of horizontal pixels in one segment.
+ * Number of horizontal pixels.
  */
 #define XMAX 24
 
 /**
  * @brief Vertical size.
  *
- * Number of vertical pixels in one segment.
+ * Number of vertical pixels.
  */
 #define YMAX 7
-
-/**
- * @brief Number of segments.
- *
- * Total number of segments.
- */
-#define SEGNUM 4
 
 /**
  * @brief Number of fonts.
@@ -147,8 +140,23 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state);
  * @param delay Number of timer cycles to wait between each pixel.
  * @see Style
  * @see Flipdot_delay
+ * @see f_frameBuffer_1
+ * @see f_frameBuffer_2
  */
 void Flipdot_writeBuffer (enum Style style, uint8_t delay);
+
+/**
+ * @brief Write one pixel of the buffer to the screen.
+ *
+ * Writes on pixel of the @b f_framerBufferCurrent to the screen if it is different from the state of the pixel currently on the screen stored in @b f_frameBufferLast.
+ * @param x X coordinate.
+ * @param y Y coordinate.
+ * @param delay Number of timer cycles to wait.
+ * @see Flipdot_delay
+ * @see f_frameBufferCurrent
+ * @see f_frameBufferLast
+ */
+void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay);
 
 /**
  * @brief Clear the buffer.
@@ -199,12 +207,41 @@ void Flipdot_delay(uint16_t n);
 /************************************************************************/
 
 /**
- * @brief Screen buffer.
+ * @brief Screen buffer 1.
  *
  * Buffer to construct the contents of the screen without writing them.
  * @see Flipdot_writeBuffer
  */
-uint8_t f_frameBuffer[XMAX];
+uint8_t f_frameBuffer_1[XMAX];
+
+/**
+ * @brief Screen buffer 2.
+ *
+ * Buffer to construct the contents of the screen without writing them.
+ * @see Flipdot_writeBuffer
+ */
+uint8_t f_frameBuffer_2[XMAX];
+
+/**
+ * @brief Number of the current frame buffer.
+ *
+ * Contains the number of the frame buffer currently stored in the @b f_frameBufferCurrent pointer.
+ */
+uint8_t f_frameBufferNum;
+
+/**
+ * @brief Pointer to the last written buffer.
+ *
+ * Always points to the image currently on screen.
+ */
+uint8_t*f_frameBufferLast;
+
+/**
+ * @brief Pointer to the current buffer.
+ *
+ * Always points to the current buffer not yet written to the screen.
+ */
+uint8_t*f_frameBufferCurrent;
 
 /**
  * @brief Store decoded output data.

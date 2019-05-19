@@ -297,73 +297,69 @@ void Flipdot_setDelay (uint8_t delay){
 
 void Flipdot_clearBuffer (void){
 	for(uint8_t i=0;i<XMAX;i++){
-		f_frameBuffer[i] = 0;
+		*(f_frameBufferCurrent+i) = 0;
 	}
 }
 
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX && state <= 1){
 	  if(state == 1){
-		  f_frameBuffer[x] |= (1<<y);
+		  *(f_frameBufferCurrent+x) |= (1<<y);
 	  }else if(state == 0){
-		  f_frameBuffer[x] &= ~(1<<y);
+		  *(f_frameBufferCurrent+x) &= ~(1<<y);
 	  }
   }
+}
+
+void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay){
+	if(((*(f_frameBufferCurrent+x) & (1 << y)) >> y) == 1){
+		if(f_frameBufferLast && ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 1){
+			Flipdot_writePixel(x,y,1);
+		}
+	}else{
+		if(f_frameBufferLast && ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 0){
+			Flipdot_writePixel(x,y,0);
+		}
+	}
+	
+	if(delay>0){
+		Flipdot_delay(delay);
+	}
 }
 
 void Flipdot_writeBuffer (enum Style style, uint8_t delay){
 	if(style == down){
 		for(uint8_t y = 0;y < YMAX;y++){
 			for(uint8_t x = 0;x < XMAX;x++){
-				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
-					Flipdot_writePixel(x,y,1);
-				}else{
-					Flipdot_writePixel(x,y,0);
-				}
-				if(delay > 0){
-					Flipdot_delay(delay);
-				}
+				Flipdot_writeBufferPixel(x,y,delay);
 			}
 		}
 	}else if(style == up){
 		for(int8_t y = (YMAX-1);y >= 0;y--){
 			for(uint8_t x = 0;x < XMAX;x++){
-				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
-					Flipdot_writePixel(x,y,1);
-				}else{
-					Flipdot_writePixel(x,y,0);
-				}
-				if(delay > 0){
-					Flipdot_delay(delay);
-				}
+				Flipdot_writeBufferPixel(x,y,delay);
 			}
 		}
 	}else if(style == right){
 		for(uint8_t x = 0;x < XMAX;x++){
 			for(uint8_t y = 0;y < YMAX;y++){
-				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
-					Flipdot_writePixel(x,y,1);
-				}else{
-					Flipdot_writePixel(x,y,0);
-				}
-				if(delay > 0){
-					Flipdot_delay(delay);
-				}
+				Flipdot_writeBufferPixel(x,y,delay);
 			}
 		}
 	}else if(style == left){
 		for(int8_t x = (XMAX-1);x >= 0;x--){
 			for(uint8_t y = 0;y < YMAX;y++){
-				if(((f_frameBuffer[x] & (1 << y)) >> y) == 1){
-					Flipdot_writePixel(x,y,1);
-				}else{
-					Flipdot_writePixel(x,y,0);
-				}
-				if(delay > 0){
-					Flipdot_delay(delay);
-				}
+				Flipdot_writeBufferPixel(x,y,delay);
 			}
 		}
+	}
+	
+	//Flip buffers
+	f_frameBufferLast = f_frameBufferCurrent;
+	if(f_frameBufferNum == 1){
+		f_frameBufferCurrent = &f_frameBuffer_2[0];
+	}else{
+		f_frameBufferCurrent = &f_frameBuffer_1[0];
 	}
 }
 
@@ -387,6 +383,11 @@ void Flipdot_init (void){
 	Flipdot_clearBuffer();
 	
 	f_writeDelay = DEFAULT_DELAY;
+	
+	f_frameBufferCurrent = &f_frameBuffer_1[0];
+	f_frameBufferNum = 1;
+	
+	f_frameBufferLast = 0;
 }
 
 void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t columnInvert){
