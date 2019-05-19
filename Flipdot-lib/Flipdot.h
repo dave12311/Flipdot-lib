@@ -155,6 +155,8 @@ void Flipdot_setString (uint8_t length, uint8_t*string);
  */
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state);
 
+void Flipdot_fillBuffer (void);
+
 /**
  * @brief Write the buffer to the screen.
  *

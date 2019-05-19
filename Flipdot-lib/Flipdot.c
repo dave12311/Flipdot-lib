@@ -301,6 +301,12 @@ void Flipdot_clearBuffer (void){
 	}
 }
 
+void Flipdot_fillBuffer (void){
+	for(uint8_t i=0;i<XMAX;i++){
+		*(f_frameBufferCurrent+i) = 0xFF;
+	}
+}
+
 void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
   if(x < XMAX && y < YMAX && state <= 1){
 	  if(state == 1){
@@ -506,6 +512,7 @@ uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 }
 
 void Flipdot_setString (uint8_t length, uint8_t*string){
+	Flipdot_clearBuffer();
 	uint8_t cursor = 0;			//Writing cursor
 	uint8_t l;					//Temp letter length
 	
@@ -526,7 +533,7 @@ void Flipdot_setString (uint8_t length, uint8_t*string){
 		cursor = 0;
 		for(uint8_t letters = 0; letters<length; letters++){
 			l = Flipdot_setLetter(*(string+letters)+BOLD, cursor);
-			cursor++;
+			cursor += l+1;
 		}
 		cursor--;
 		Flipdot_centerBuffer(cursor);
@@ -548,7 +555,7 @@ void Flipdot_setString (uint8_t length, uint8_t*string){
 			cursor = 0;
 			for(uint8_t letters = 0; letters<length; letters++){
 				l = Flipdot_setLetter(*(string+letters)+SEMIBOLD, cursor);
-				cursor++;
+				cursor += l+1;
 			}
 			cursor--;
 			Flipdot_centerBuffer(cursor);
@@ -558,7 +565,7 @@ void Flipdot_setString (uint8_t length, uint8_t*string){
 			cursor = 0;
 			for(uint8_t letters = 0; letters<length; letters++){
 				l = Flipdot_setLetter(*(string+letters), cursor);
-				cursor++;
+				cursor += l+1;
 			}
 			cursor--;
 			if(cursor<XMAX){
@@ -569,4 +576,8 @@ void Flipdot_setString (uint8_t length, uint8_t*string){
 			}
 		}
 	}
+}
+
+void Flipdot_centerBuffer(uint8_t length){
+	
 }
