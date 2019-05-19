@@ -2,37 +2,29 @@
 
 int main(void){
 	Flipdot_init();
-	//Flipdot_setDelay(3);
-
-	Flipdot_setLetter(0,0);
-	Flipdot_setLetter(1,5);
-	Flipdot_setLetter(2,10);
-	Flipdot_setLetter(3,15);
-	Flipdot_setLetter(4,20);
-	uint16_t t_delay = 0;
-
 	while(1){
-		Flipdot_writeBuffer(0,t_delay);
-		Flipdot_delay(7811);
-		Flipdot_fillScreen(0);
-		Flipdot_delay(7811);
-		
-		Flipdot_writeBuffer(1,t_delay);
-		Flipdot_delay(7811);
-		Flipdot_fillScreen(0);
-		Flipdot_delay(7811);
-		
-		Flipdot_writeBuffer(2,t_delay);
-		Flipdot_delay(7811);
-		Flipdot_fillScreen(0);
-		Flipdot_delay(7811);
-		
-		Flipdot_writeBuffer(3,t_delay);
-		Flipdot_delay(7811);
-		Flipdot_fillScreen(0);
-		Flipdot_delay(7811);
-		
-		//t_delay++;
+		uint8_t length = Flipdot_setLetter(132,0);
+		Flipdot_clearBuffer();
+		for(uint8_t i=1;i<XMAX-length+1;i++){
+			Flipdot_clearBuffer();
+			if(i%2==0){
+				Flipdot_setLetter(132,i);
+				}else{
+				Flipdot_setLetter(133,i);
+			}
+			Flipdot_writeBuffer(0,0);
+			Flipdot_delay(500);
+		}
+		for(int8_t i=(XMAX-length-1);i>=0;i--){
+			Flipdot_clearBuffer();
+			if(i%2==0){
+				Flipdot_setLetter(132,i);
+				}else{
+				Flipdot_setLetter(133,i);
+			}
+			Flipdot_writeBuffer(0,0);
+			Flipdot_delay(500);
+		}
 	}
 }
 

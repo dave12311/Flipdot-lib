@@ -58,7 +58,7 @@
  * Total number of preprogrammed characters.
  * @see font
  */
-#define FONTS 135
+#define FONTS 134
 
 /**
  * @brief Display style.

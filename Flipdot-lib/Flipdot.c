@@ -313,11 +313,11 @@ void Flipdot_setBuffer (uint8_t x, uint8_t y, uint8_t state){
 
 void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay){
 	if(((*(f_frameBufferCurrent+x) & (1 << y)) >> y) == 1){
-		if(f_frameBufferLast && ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 1){
+		if(!f_frameBufferLast || ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 0){
 			Flipdot_writePixel(x,y,1);
 		}
 	}else{
-		if(f_frameBufferLast && ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 0){
+		if(!f_frameBufferLast || ((*(f_frameBufferLast+x) & (1 << y)) >> y) == 1){
 			Flipdot_writePixel(x,y,0);
 		}
 	}
@@ -358,8 +358,10 @@ void Flipdot_writeBuffer (enum Style style, uint8_t delay){
 	f_frameBufferLast = f_frameBufferCurrent;
 	if(f_frameBufferNum == 1){
 		f_frameBufferCurrent = &f_frameBuffer_2[0];
+		f_frameBufferNum = 2;
 	}else{
 		f_frameBufferCurrent = &f_frameBuffer_1[0];
+		f_frameBufferNum = 1;
 	}
 }
 
@@ -406,8 +408,8 @@ void Flipdot_setOutputPinData (uint8_t x, uint8_t y, uint8_t rowInvert, uint8_t 
 }
 
 void Flipdot_writePixel (uint8_t x, uint8_t y, uint8_t state){
-	x = XMAX-x-1;
-	y = YMAX-y-1;
+	//x = XMAX-x-1;
+	//y = YMAX-y-1;
 	if(x < XMAX && y < YMAX && state <= 1){
 		uint8_t x_mod = x % 2;
 		uint8_t y_mod = y % 2;
@@ -468,7 +470,7 @@ uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 		uint8_t length = 0;
 		if(letter < FONTS && indent < XMAX){
 			letter++;
-			uint8_t arrayNum = 0;
+			uint16_t arrayNum = 0;
 			//Find first byte of letter (arrayNum)
 			for(uint8_t i = 0;i < letter;){
 				while(1){
