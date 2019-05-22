@@ -140,10 +140,9 @@ uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent);
  * @brief Set a string in buffer automatically.
  *
  * Sets the given array of characters in the buffer. The function determines the font size and letter spacing, and centers the text automatically.
- * @param length Number of letters.
  * @param string Array containing the letters.
  */
-void Flipdot_setString (uint8_t length, uint8_t*string);
+void Flipdot_setString (uint8_t*string);
 
 /**
  * @brief Set the value of a single pixel in the buffer.
@@ -239,6 +238,17 @@ void Flipdot_writeBufferPixel (uint8_t x, uint8_t y, uint8_t delay);
  * @param length The length of the contents of the buffer from the left.
  */
 void Flipdot_centerBuffer (uint8_t length);
+
+/**
+ * @brief Get the length of a string.
+ *
+ * Returns the length of a the given string. The string must be null-terminated.
+ * @param string Pointer to the character array.
+ * @return The length of the string.
+ * @see Flipdot_setString
+ * @see font
+ */
+uint8_t Flipdot_getLength (uint8_t*string);
 
 /************************************************************************/
 /*                       INTERNAL VARIALBES                             */

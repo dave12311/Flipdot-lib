@@ -474,8 +474,7 @@ void Flipdot_fillScreen (uint8_t state){
 
 uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 		uint8_t length = 0;
-		if(letter < FONTS){
-			letter++;
+		if(letter <= FONTS && letter > 0){
 			uint16_t arrayNum = 0;
 			//Find first byte of letter (arrayNum)
 			for(uint8_t i = 0;i < letter;){
@@ -511,8 +510,9 @@ uint8_t Flipdot_setLetter (uint8_t letter, uint8_t indent){
 		return length;
 }
 
-void Flipdot_setString (uint8_t length, uint8_t*string){
+void Flipdot_setString (uint8_t*string){
 	Flipdot_clearBuffer();
+	uint8_t length = Flipdot_getLength(string);
 	uint8_t cursor = 0;			//Writing cursor
 	uint8_t l;					//Temp letter length
 	
@@ -585,5 +585,17 @@ void Flipdot_centerBuffer(uint8_t length){
 			*(f_frameBufferCurrent+x) = *(f_frameBufferCurrent+x-1);
 		}
 		*(f_frameBufferCurrent) = 0;
+	}
+}
+
+uint8_t Flipdot_getLength(uint8_t*string){
+	if(*(string) == 0){
+		return 0;
+	}else{
+		for(uint8_t i=0;i<255;i++){
+			if(*(string+i) == 0){
+				return i;
+			}
+		}
 	}
 }
